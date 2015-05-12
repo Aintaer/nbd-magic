@@ -2,7 +2,7 @@ import View from 'nbd/View';
 import extend from 'nbd/util/extend';
 import async from 'nbd/util/async';
 import sax from './sax';
-import vdom from 'virtual-dom';
+import vdom from './virtual-dom/index';
 
 const _parser = sax.parser();
 const tagstack = [];
