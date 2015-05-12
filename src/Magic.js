@@ -1,10 +1,22 @@
 import View from 'nbd/View';
 import extend from 'nbd/util/extend';
 import async from 'nbd/util/async';
-import sax from './sax';
-import vdom from './virtual-dom/index';
 
-const _parser = sax.parser();
+import sax from './sax';
+import transform from './transformTag';
+
+import createElement from './virtual-dom/vdom/create-element';
+import patch from './virtual-dom/vdom/patch';
+import diff from './virtual-dom/vtree/diff';
+import h from './virtual-dom/virtual-hyperscript/index';
+import svg from './virtual-dom/virtual-hyperscript/svg';
+
+const _parser = sax.parser({
+  html5: true,
+  trim: true,
+  normalize: true,
+  lowercase: true
+});
 const tagstack = [];
 
 const blocking = '__debounced__'; // Symbol('debounced');
@@ -19,30 +31,11 @@ function debounce(fn) {
 
 let tree;
 
-function isAttribute(name) {
-	return !(/^value$/i.test(name));
-}
-
-function transformAttributes(properties) {
-	properties.attributes = {};
-	for (let prop in properties) {
-		if (properties.hasOwnProperty(prop) && prop !== 'attributes') {
-			if (prop.toLowerCase() === 'class') {
-				properties.className = properties[prop];
-				delete properties[prop];
-			}
-			if (isAttribute(prop)) {
-				properties.attributes[prop] = properties[prop];
-				delete properties[prop];
-			}
-		}
-	}
-}
-
 extend(_parser, {
 	onopentag({ name, attributes }) {
-		transformAttributes(attributes);
 		const tag = { name, attributes, children: [] };
+		transform(tag);
+
 		if (tagstack[tagstack.length - 1]) {
 			tagstack[tagstack.length - 1].children.push(tag);
 		}
@@ -50,7 +43,9 @@ extend(_parser, {
 	},
 	onclosetag() {
 		const tag = tagstack.pop();
-		let vnode = vdom.h(tag.name, tag.attributes, tag.children);
+
+        // TODO: switch to svg() when in svg mode
+		let vnode = h(tag.name, tag.attributes, tag.children);
 		const last = tagstack[tagstack.length - 1];
 		if (last) {
 			last.children.splice(last.children.lastIndexOf(tag), 1, vnode);
@@ -91,13 +86,13 @@ export default View.extend({
 	},
 
 	appendTo(tree, $context) {
-		tree._el = vdom.create(tree);
+		tree._el = createElement(tree);
 		return View.appendTo(tree._el, $context);
 	},
 
 	replace(oldtree, newtree) {
-		const patch = vdom.diff(oldtree, newtree);
-		vdom.patch(newtree._el = oldtree._el, patch);
+		const p = diff(oldtree, newtree);
+		patch(newtree._el = oldtree._el, p);
 	},
 
 	find($root, selector) {
