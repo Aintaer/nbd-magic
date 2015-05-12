@@ -1,0 +1,31 @@
+{
+  "name": "nbd-magic",
+  "version": "1.0.0",
+  "description": "A Magical View class for nbd.js",
+  "main": "Magic.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aintaer/nbd-magic.git"
+  },
+  "keywords": [
+    "view",
+    "nbd.js"
+  ],
+  "author": "aintaer@aintaer.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aintaer/nbd-magic/issues"
+  },
+  "homepage": "https://github.com/Aintaer/nbd-magic",
+  "dependencies": {
+    "sax": "^1.1.0",
+    "virtual-dom": "^2.0.1"
+  },
+  "devDependencies": {
+    "babel": "^5.2.17",
+    "requirejs": "^2.1.17"
+  }
+}
