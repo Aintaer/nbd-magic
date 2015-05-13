@@ -36,15 +36,14 @@ class EventHandler {
   }
 
   listener(event) {
-    const spec = this.handler.events[event.type];
-    this.caller(spec, event);
+    this.caller(this.handler.events[event.type], event);
   }
 
   caller(spec, event) {
     if (!spec) { return; }
     switch (typeof spec) {
       case 'function':
-        spec.call(event.currentTarget, event);
+        spec.call(event.delegateTarget || event.currentTarget, event);
       break;
       case 'string':
         this.handler[spec](event);
@@ -55,8 +54,15 @@ class EventHandler {
         }
         else {
           for (let selector in spec) {
-            if (this.match(event.currentTarget, selector, event.target)) {
+            // Find all matching elements
+            const matches = event.currentTarget.querySelectorAll(selector);
+
+            // If event.target is, or is a child of matching element
+            let found = this.find(matches, event.target);
+            if (found) {
+              event.delegateTarget = found;
               this.caller(spec[selector], event);
+              delete event.delegateTarget;
             }
           }
         }
@@ -64,15 +70,13 @@ class EventHandler {
     }
   }
 
-  match(root, selector, target) {
-    root = root || target.document || target.ownerDocument;
-
-    for (let match of root.querySelectorAll(selector)) {
-      if (match === target) {
-        return true;
+  find(matches, target) {
+    for (let match of matches) {
+      // Is the target itself or contains the target
+      if (match === target || match.contains(target)) {
+        return match;
       }
     }
-    return false;
   }
 
   hook(node) {
