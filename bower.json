@@ -1,0 +1,19 @@
+{
+  "name": "nbd-magic",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Aintaer/nbd-magic",
+  "authors": [
+    "Alex Lee <aintaer@aintaer.com>"
+  ],
+  "description": "Reactive View class for nbd.js",
+  "main": "dist/Magic.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "view",
+    "nbd.js",
+    "nbd"
+  ],
+  "license": "MIT"
+}
