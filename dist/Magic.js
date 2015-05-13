@@ -1437,8 +1437,8 @@ function isHook(hook) {
 
 });
 
-define('virtual-dom/vdom/apply-properties',['require','exports','module','is-object','../vnode/is-vhook.js'],function (require, exports, module) {var isObject = require("is-object")
-var isHook = require("../vnode/is-vhook.js")
+define('virtual-dom/vdom/apply-properties',['require','exports','module','is-object','../vnode/is-vhook'],function (require, exports, module) {var isObject = require("is-object")
+var isHook = require("../vnode/is-vhook")
 
 module.exports = applyProperties
 
@@ -1620,14 +1620,14 @@ function renderThunk(thunk, previous) {
 
 });
 
-define('virtual-dom/vdom/create-element',['require','exports','module','global/document','./apply-properties','../vnode/is-vnode.js','../vnode/is-vtext.js','../vnode/is-widget.js','../vnode/handle-thunk.js'],function (require, exports, module) {var document = require("global/document")
+define('virtual-dom/vdom/create-element',['require','exports','module','global/document','./apply-properties','../vnode/is-vnode','../vnode/is-vtext','../vnode/is-widget','../vnode/handle-thunk'],function (require, exports, module) {var document = require("global/document")
 
 var applyProperties = require("./apply-properties")
 
-var isVNode = require("../vnode/is-vnode.js")
-var isVText = require("../vnode/is-vtext.js")
-var isWidget = require("../vnode/is-widget.js")
-var handleThunk = require("../vnode/handle-thunk.js")
+var isVNode = require("../vnode/is-vnode")
+var isVText = require("../vnode/is-vtext")
+var isWidget = require("../vnode/is-widget")
+var handleThunk = require("../vnode/handle-thunk")
 
 module.exports = createElement
 
@@ -1793,7 +1793,7 @@ VirtualPatch.prototype.type = "VirtualPatch"
 
 });
 
-define('virtual-dom/vdom/update-widget',['require','exports','module','../vnode/is-widget.js'],function (require, exports, module) {var isWidget = require("../vnode/is-widget.js")
+define('virtual-dom/vdom/update-widget',['require','exports','module','../vnode/is-widget'],function (require, exports, module) {var isWidget = require("../vnode/is-widget")
 
 module.exports = updateWidget
 
@@ -1811,10 +1811,10 @@ function updateWidget(a, b) {
 
 });
 
-define('virtual-dom/vdom/patch-op',['require','exports','module','./apply-properties','../vnode/is-widget.js','../vnode/vpatch.js','./create-element','./update-widget'],function (require, exports, module) {var applyProperties = require("./apply-properties")
+define('virtual-dom/vdom/patch-op',['require','exports','module','./apply-properties','../vnode/is-widget','../vnode/vpatch','./create-element','./update-widget'],function (require, exports, module) {var applyProperties = require("./apply-properties")
 
-var isWidget = require("../vnode/is-widget.js")
-var VPatch = require("../vnode/vpatch.js")
+var isWidget = require("../vnode/is-widget")
+var VPatch = require("../vnode/vpatch")
 
 var render = require("./create-element")
 var updateWidget = require("./update-widget")
@@ -2536,7 +2536,7 @@ function appendPatch(apply, patch) {
 
 });
 
-define('virtual-dom/vnode/vnode.js',['require','exports','module','./version','./is-vnode','./is-widget','./is-thunk','./is-vhook'],function (require, exports, module) {var version = require("./version")
+define('virtual-dom/vnode/vnode',['require','exports','module','./version','./is-vnode','./is-widget','./is-thunk','./is-vhook'],function (require, exports, module) {var version = require("./version")
 var isVNode = require("./is-vnode")
 var isWidget = require("./is-widget")
 var isThunk = require("./is-thunk")
@@ -2611,7 +2611,7 @@ VirtualNode.prototype.type = "VirtualNode"
 
 });
 
-define('virtual-dom/vnode/vtext.js',['require','exports','module','./version'],function (require, exports, module) {var version = require("./version")
+define('virtual-dom/vnode/vtext',['require','exports','module','./version'],function (require, exports, module) {var version = require("./version")
 
 module.exports = VirtualText
 
@@ -2733,7 +2733,7 @@ module.exports = (function split(undef) {
 
 });
 
-define('virtual-dom/virtual-hyperscript/parse-tag.js',['require','exports','module','browser-split'],function (require, exports, module) {'use strict';
+define('virtual-dom/virtual-hyperscript/parse-tag',['require','exports','module','browser-split'],function (require, exports, module) {'use strict';
 
 var split = require('browser-split');
 
@@ -2790,7 +2790,7 @@ function parseTag(tag, props) {
 
 });
 
-define('virtual-dom/virtual-hyperscript/hooks/soft-set-hook.js',['require','exports','module'],function (require, exports, module) {'use strict';
+define('virtual-dom/virtual-hyperscript/hooks/soft-set-hook',['require','exports','module'],function (require, exports, module) {'use strict';
 
 module.exports = SoftSetHook;
 
@@ -2830,7 +2830,7 @@ function EvStore(elem) {
 
 });
 
-define('virtual-dom/virtual-hyperscript/hooks/ev-hook.js',['require','exports','module','ev-store'],function (require, exports, module) {'use strict';
+define('virtual-dom/virtual-hyperscript/hooks/ev-hook',['require','exports','module','ev-store'],function (require, exports, module) {'use strict';
 
 var EvStore = require('ev-store');
 
@@ -2860,21 +2860,21 @@ EvHook.prototype.unhook = function(node, propertyName) {
 
 });
 
-define('virtual-dom/virtual-hyperscript/index.js',['require','exports','module','x-is-array','../vnode/vnode.js','../vnode/vtext.js','../vnode/is-vnode','../vnode/is-vtext','../vnode/is-widget','../vnode/is-vhook','../vnode/is-thunk','./parse-tag.js','./hooks/soft-set-hook.js','./hooks/ev-hook.js'],function (require, exports, module) {'use strict';
+define('virtual-dom/virtual-hyperscript/index',['require','exports','module','x-is-array','../vnode/vnode','../vnode/vtext','../vnode/is-vnode','../vnode/is-vtext','../vnode/is-widget','../vnode/is-vhook','../vnode/is-thunk','./parse-tag','./hooks/soft-set-hook','./hooks/ev-hook'],function (require, exports, module) {'use strict';
 
 var isArray = require('x-is-array');
 
-var VNode = require('../vnode/vnode.js');
-var VText = require('../vnode/vtext.js');
+var VNode = require('../vnode/vnode');
+var VText = require('../vnode/vtext');
 var isVNode = require('../vnode/is-vnode');
 var isVText = require('../vnode/is-vtext');
 var isWidget = require('../vnode/is-widget');
 var isHook = require('../vnode/is-vhook');
 var isVThunk = require('../vnode/is-thunk');
 
-var parseTag = require('./parse-tag.js');
-var softSetHook = require('./hooks/soft-set-hook.js');
-var evHook = require('./hooks/ev-hook.js');
+var parseTag = require('./parse-tag');
+var softSetHook = require('./hooks/soft-set-hook');
+var evHook = require('./hooks/ev-hook');
 
 module.exports = h;
 
@@ -3352,11 +3352,11 @@ AttributeHook.prototype.type = 'AttributeHook';
 
 });
 
-define('virtual-dom/virtual-hyperscript/svg',['require','exports','module','x-is-array','./index.js','./svg-attribute-namespace','./hooks/attribute-hook'],function (require, exports, module) {'use strict';
+define('virtual-dom/virtual-hyperscript/svg',['require','exports','module','x-is-array','./index','./svg-attribute-namespace','./hooks/attribute-hook'],function (require, exports, module) {'use strict';
 
 var isArray = require('x-is-array');
 
-var h = require('./index.js');
+var h = require('./index');
 
 
 var SVGAttributeNamespace = require('./svg-attribute-namespace');
