@@ -1,25 +1,31 @@
-function isAttribute(name) {
-	return !(/^value$/i.test(name));
-}
+const propMap = {
+  id: 'id',
+  name: 'name',
+  class: 'className',
+  title: 'title',
+  value: 'value',
+  tabindex: 'tabIndex'
+};
 
-function transformAttributes(properties) {
-	properties.attributes = {};
-	for (let prop in properties) {
-		if (properties.hasOwnProperty(prop) && prop !== 'attributes') {
-			if (prop.toLowerCase() === 'class') {
-				properties.className = properties[prop];
-				delete properties[prop];
-			}
-			if (isAttribute(prop)) {
-				properties.attributes[prop] = properties[prop];
-				delete properties[prop];
-			}
-		}
-	}
+function transformAttributes(attributes) {
+  const properties = {};
+  properties.attributes = attributes;
+
+  for (let prop in attributes) {
+    if (attributes.hasOwnProperty(prop)) {
+      if (propMap[prop]) {
+        properties[propMap[prop]] = attributes[prop];
+        delete attributes[prop];
+      }
+    }
+  }
+
+  return properties;
 }
 
 function transformTag(tag) {
-  transformAttributes(tag.attributes);
+  tag.properties = transformAttributes(tag.attributes);
+  delete tag.attributes;
 }
 
 export default transformTag;

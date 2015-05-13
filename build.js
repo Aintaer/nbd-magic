@@ -1,6 +1,7 @@
 ({
   baseUrl: '.',
   name: 'Magic',
+  optimize: 'none',
   paths: {
     nbd: 'empty:',
     'browser-split': 'deps/browser-split/index',

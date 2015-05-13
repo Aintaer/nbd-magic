@@ -6,21 +6,21 @@ let sax = {
 };
 
 sax.VOID_ELEMENTS = {
-	area: 1,
-	base: 1,
-	br: 1,
-	col: 1,
-	embed: 1,
-	hr: 1,
-	img: 1,
-	input: 1,
-	keygen: 1,
-	link: 1,
-	meta: 1,
-	param: 1,
-	source: 1,
-	track: 1,
-	wbr: 1
+  area: 1,
+  base: 1,
+  br: 1,
+  col: 1,
+  embed: 1,
+  hr: 1,
+  img: 1,
+  input: 1,
+  keygen: 1,
+  link: 1,
+  meta: 1,
+  param: 1,
+  source: 1,
+  track: 1,
+  wbr: 1
 };
 
 // When we pass the MAX_BUFFER_LENGTH position, start checking for buffer overruns.
@@ -1203,12 +1203,13 @@ function write (chunk) {
         if (is(nameBody, c)) parser.tagName += c
         else {
           newTag(parser)
-          if (c === ">")
-			 if (parser.opt.html5 && parse.tagName.toLowerCase() in sax.VOID_ELEMENTS) {
-				 openTag(parser, true)
-				 closeTag(parser)
-			 }
-			 else openTag(parser)
+          if (c === ">") {
+            if (parser.opt.html5 && parser.tagName.toLowerCase() in sax.VOID_ELEMENTS) {
+              openTag(parser, true)
+              closeTag(parser)
+            }
+            else openTag(parser)
+          }
           else if (c === "/") parser.state = S.OPEN_TAG_SLASH
           else {
             if (not(whitespace, c)) strictFail(
