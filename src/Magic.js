@@ -19,14 +19,13 @@ const _parser = sax.parser(true, {
 });
 const tagstack = [];
 
-const blocking = '__debounced__'; // Symbol('debounced');
-
-function debounce(fn) {
-  if (fn[blocking]) { return; }
-  const retval = fn.call(this);
-  fn[blocking] = true;
-  async(() => delete fn[blocking]);
-  return retval;
+function debounce(fn, ctxt) {
+  if (!fn.__blocking__) {
+    fn.__blocking__ = async(function() {
+      fn.call(ctxt);
+      delete fn.__blocking__;
+    });
+  }
 }
 
 class EventHandler {
@@ -145,7 +144,7 @@ export default View.extend({
   init(...args) {
     this._super(...args);
     if (this._model.on) {
-      this.listenTo(this._model, 'all', () => debounce.call(this, this.render));
+      this.listenTo(this._model, 'all', () => debounce(this.render, this));
     }
 
     this.on({

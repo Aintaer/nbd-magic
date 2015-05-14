@@ -3454,18 +3454,13 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
   });
   var tagstack = [];
 
-  var blocking = '__debounced__'; // Symbol('debounced');
-
-  function debounce(fn) {
-    if (fn[blocking]) {
-      return;
+  function debounce(fn, ctxt) {
+    if (!fn.__blocking__) {
+      fn.__blocking__ = _async(function () {
+        fn.call(ctxt);
+        delete fn.__blocking__;
+      });
     }
-    var retval = fn.call(this);
-    fn[blocking] = true;
-    _async(function () {
-      return delete fn[blocking];
-    });
-    return retval;
   }
 
   var EventHandler = (function () {
@@ -3630,7 +3625,7 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
       this._super.apply(this, args);
       if (this._model.on) {
         this.listenTo(this._model, 'all', function () {
-          return debounce.call(_this2, _this2.render);
+          return debounce(_this2.render, _this2);
         });
       }
 
