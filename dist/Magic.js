@@ -3664,11 +3664,14 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
     },
 
     find: function find($root, selector) {
+      if (!selector) {
+        return $root._el || $root;
+      }
       return _View.find($root._el || $root, selector);
     },
 
-    remove: function remove($el) {
-      this.replace($el);
+    remove: function remove(tree) {
+      this.replace(tree);
     }
   });
 });

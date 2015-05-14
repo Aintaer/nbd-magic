@@ -178,10 +178,13 @@ export default View.extend({
   },
 
   find($root, selector) {
+    if (!selector) {
+      return $root._el || $root;
+    }
     return View.find($root._el || $root, selector);
   },
 
-  remove($el) {
-    this.replace($el);
+  remove(tree) {
+    this.replace(tree);
   }
 });
