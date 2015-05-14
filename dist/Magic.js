@@ -1410,7 +1410,7 @@ define('transformTag',['exports', 'module'], function (exports, module) {
   }
 
   function transformTag(tag) {
-    tag.properties = transformAttributes(tag.attributes);
+    tag.properties = tag.svg ? { attributes: tag.attributes } : transformAttributes(tag.attributes);
     delete tag.attributes;
   }
 
@@ -3446,7 +3446,7 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
 
   var _svg = _interopRequire(_virtualDomVirtualHyperscriptSvg);
 
-  var _parser = _sax2.parser(false, {
+  var _parser = _sax2.parser(true, {
     html5: true,
     trim: true,
     normalize: true,
@@ -3576,12 +3576,12 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
       var name = _ref.name;
       var attributes = _ref.attributes;
 
-      var tag = { name: name, attributes: attributes, children: [] };
-      _transform(tag);
-
       if (name.toLowerCase() === 'svg') {
         _parser.svg = true;
       }
+
+      var tag = { name: name, attributes: attributes, children: [], svg: _parser.svg };
+      _transform(tag);
 
       if (tagstack[tagstack.length - 1]) {
         tagstack[tagstack.length - 1].children.push(tag);
@@ -3594,7 +3594,7 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
       var tag = tagstack.pop();
 
       // switch to svg() when in svg mode
-      var vnode = (_parser.svg ? _svg : _h)(tag.name, tag.properties, tag.children);
+      var vnode = (tag.svg ? _svg : _h)(tag.name, tag.properties, tag.children);
 
       if (tag.name.toLowerCase() === 'svg') {
         _parser.svg = false;

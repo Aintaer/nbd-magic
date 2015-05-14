@@ -11,7 +11,7 @@ import diff from './virtual-dom/vtree/diff';
 import h from './virtual-dom/virtual-hyperscript/index';
 import svg from './virtual-dom/virtual-hyperscript/svg';
 
-const _parser = sax.parser(false, {
+const _parser = sax.parser(true, {
   html5: true,
   trim: true,
   normalize: true,
@@ -96,12 +96,12 @@ let tree, handler;
 
 extend(_parser, {
   onopentag({ name, attributes }) {
-    const tag = { name, attributes, children: [] };
-    transform(tag);
-
     if (name.toLowerCase() === 'svg') {
       _parser.svg = true;
     }
+
+    const tag = { name, attributes, children: [], svg: _parser.svg };
+    transform(tag);
 
     if (tagstack[tagstack.length - 1]) {
       tagstack[tagstack.length - 1].children.push(tag);
@@ -115,7 +115,7 @@ extend(_parser, {
     const tag = tagstack.pop();
 
     // switch to svg() when in svg mode
-    let vnode = (_parser.svg ? svg : h)(tag.name, tag.properties, tag.children);
+    let vnode = (tag.svg ? svg : h)(tag.name, tag.properties, tag.children);
 
     if (tag.name.toLowerCase() === 'svg') {
       _parser.svg = false;

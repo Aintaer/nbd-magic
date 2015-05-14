@@ -24,7 +24,9 @@ function transformAttributes(attributes) {
 }
 
 function transformTag(tag) {
-  tag.properties = transformAttributes(tag.attributes);
+  tag.properties = tag.svg ?
+    { attributes: tag.attributes } :
+    transformAttributes(tag.attributes);
   delete tag.attributes;
 }
 
