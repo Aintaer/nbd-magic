@@ -19,13 +19,15 @@ const _parser = sax.parser(true, {
 });
 const tagstack = [];
 
-function debounce(fn, ctxt) {
-  if (!fn.__blocking__) {
-    fn.__blocking__ = async(function() {
-      fn.call(ctxt);
-      delete fn.__blocking__;
-    });
-  }
+function debounce(callback, ctxt) {
+  return function wrapper() {
+    if (!wrapper._called) {
+      wrapper._called = async(function() {
+        wrapper._called = false;
+        callback.call(ctxt);
+      });
+    }
+  };
 }
 
 class EventHandler {
@@ -144,7 +146,7 @@ export default View.extend({
   init(...args) {
     this._super(...args);
     if (this._model.on) {
-      this.listenTo(this._model, 'all', () => debounce(this.render, this));
+      this.listenTo(this._model, 'all', debounce(this.render, this));
     }
 
     this.on({
