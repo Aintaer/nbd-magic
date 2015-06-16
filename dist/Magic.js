@@ -3491,7 +3491,11 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
             spec.call(event.delegateTarget || event.currentTarget, event);
             break;
           case 'string':
-            this.handler[spec](event);
+            if (this.handler[spec]) {
+              this.handler[spec](event);
+            } else {
+              this.handler.trigger(spec, event);
+            }
             break;
           case 'object':
             if (Array.isArray(spec)) {
