@@ -30,6 +30,8 @@ function debounce(callback, ctxt) {
   };
 }
 
+const isEvent = /^:(.*)/;
+
 class EventHandler {
   constructor(handler) {
     this.handler = handler;
@@ -42,6 +44,7 @@ class EventHandler {
 
   caller(spec, event) {
     if (!spec) { return; }
+    let eventName;
     switch (typeof spec) {
       case 'function':
         spec.call(event.delegateTarget || event.currentTarget, event);
@@ -50,8 +53,11 @@ class EventHandler {
         if (this.handler[spec]) {
           this.handler[spec](event);
         }
+        else if (eventName = isEvent.exec(spec)) {
+          this.handler.trigger(eventName[1], event);
+        }
         else {
-          this.handler.trigger(spec, event);
+          throw new Error('Method "' + spec + '" not found');
         }
       break;
       case 'object':

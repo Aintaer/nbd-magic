@@ -3465,6 +3465,8 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
     };
   }
 
+  var isEvent = /^:(.*)/;
+
   var EventHandler = (function () {
     function EventHandler(handler) {
       _classCallCheck(this, EventHandler);
@@ -3486,6 +3488,7 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
         if (!spec) {
           return;
         }
+        var eventName = undefined;
         switch (typeof spec) {
           case 'function':
             spec.call(event.delegateTarget || event.currentTarget, event);
@@ -3493,8 +3496,10 @@ define('Magic',['exports', 'module', 'nbd/View', 'nbd/util/extend', 'nbd/util/as
           case 'string':
             if (this.handler[spec]) {
               this.handler[spec](event);
+            } else if (eventName = isEvent.exec(spec)) {
+              this.handler.trigger(eventName[1], event);
             } else {
-              this.handler.trigger(spec, event);
+              throw new Error('Method "' + spec + '" not found');
             }
             break;
           case 'object':
