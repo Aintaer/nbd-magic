@@ -1,6 +1,6 @@
 {
   "name": "nbd-magic",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "homepage": "https://github.com/Aintaer/nbd-magic",
   "authors": [
     "Alex Lee <aintaer@aintaer.com>"
