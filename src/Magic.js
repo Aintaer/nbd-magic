@@ -5,11 +5,11 @@ import async from 'nbd/util/async';
 import sax from './sax';
 import transform from './transformTag';
 
-import createElement from './virtual-dom/vdom/create-element';
-import patch from './virtual-dom/vdom/patch';
-import diff from './virtual-dom/vtree/diff';
-import h from './virtual-dom/virtual-hyperscript/index';
-import svg from './virtual-dom/virtual-hyperscript/svg';
+import createElement from 'virtual-dom/vdom/create-element';
+import patch from 'virtual-dom/vdom/patch';
+import diff from 'virtual-dom/vtree/diff';
+import h from 'virtual-dom/virtual-hyperscript/index';
+import svg from 'virtual-dom/virtual-hyperscript/svg';
 
 const _parser = sax.parser(true, {
   html5: true,
