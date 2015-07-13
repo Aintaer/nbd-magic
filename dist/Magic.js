@@ -187,31 +187,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'find',
 	    value: function find(matches, target) {
-	      var _iteratorNormalCompletion = true;
-	      var _didIteratorError = false;
-	      var _iteratorError = undefined;
-
-	      try {
-	        for (var _iterator = matches[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	          var match = _step.value;
-
-	          // Is the target itself or contains the target
-	          if (match === target || match.contains(target)) {
-	            return match;
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError = true;
-	        _iteratorError = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion && _iterator['return']) {
-	            _iterator['return']();
-	          }
-	        } finally {
-	          if (_didIteratorError) {
-	            throw _iteratorError;
-	          }
+	      for (var i = 0; i < matches.length; ++i) {
+	        var match = matches[i];
+	        // Is the target itself or contains the target
+	        if (match === target || match.contains(target)) {
+	          return match;
 	        }
 	      }
 	    }

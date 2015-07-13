@@ -83,7 +83,8 @@ class EventHandler {
   }
 
   find(matches, target) {
-    for (let match of matches) {
+    for (let i = 0; i < matches.length; ++i) {
+      let match = matches[i];
       // Is the target itself or contains the target
       if (match === target || match.contains(target)) {
         return match;
