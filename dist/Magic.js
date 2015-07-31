@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _parser = _sax2['default'].parser(true, {
 	  html5: true,
-	  trim: true,
+	  trim: false,
 	  normalize: true,
 	  lowercase: true
 	});
@@ -881,10 +881,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	SAXStream.prototype = Object.create(Stream.prototype, { constructor: { value: SAXStream } });
 
 	SAXStream.prototype.write = function (data) {
-	  if (typeof Buffer === "function" && typeof Buffer.isBuffer === "function" && Buffer.isBuffer(data)) {
+	  if (typeof Buffer === 'function' && typeof Buffer.isBuffer === 'function' && Buffer.isBuffer(data)) {
 	    if (!this._decoder) {
 	      var SD = __webpack_require__(32).StringDecoder;
-	      this._decoder = new SD("utf8");
+	      this._decoder = new SD('utf8');
 	    }
 	    data = this._decoder.write(data);
 	  }
@@ -914,15 +914,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	// character classes and tokens
-	var whitespace = "\r\n\t "
+	var whitespace = "\r\n\t ",
+
 	// this really needs to be replaced with character classes.
 	// XML allows all manner of ridiculous numbers and digits.
-	,
-	    number = "0124356789",
-	    letter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	number = "0124356789",
+	    letter = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+
 	// (Letter | "_" | ":")
-	,
-	    quote = "'\"",
+	quote = "'\"",
 	    entity = number + letter + "#",
 	    attribEnd = whitespace + ">",
 	    CDATA = "[CDATA[",
@@ -958,7 +958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function isRegExp(c) {
-	  return Object.prototype.toString.call(c) === "[object RegExp]";
+	  return Object.prototype.toString.call(c) === '[object RegExp]';
 	}
 
 	function is(charclass, c) {
@@ -970,42 +970,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	var S = 0;
-	sax.STATE = { BEGIN: S++ // leading byte order mark or whitespace
-	  , BEGIN_WHITESPACE: S++ // leading whitespace
-	  , TEXT: S++ // general stuff
-	  , TEXT_ENTITY: S++ // &amp and such.
-	  , OPEN_WAKA: S++ // <
-	  , SGML_DECL: S++ // <!BLARG
-	  , SGML_DECL_QUOTED: S++ // <!BLARG foo "bar
-	  , DOCTYPE: S++ // <!DOCTYPE
-	  , DOCTYPE_QUOTED: S++ // <!DOCTYPE "//blah
-	  , DOCTYPE_DTD: S++ // <!DOCTYPE "//blah" [ ...
-	  , DOCTYPE_DTD_QUOTED: S++ // <!DOCTYPE "//blah" [ "foo
-	  , COMMENT_STARTING: S++ // <!-
-	  , COMMENT: S++ // <!--
-	  , COMMENT_ENDING: S++ // <!-- blah -
-	  , COMMENT_ENDED: S++ // <!-- blah --
-	  , CDATA: S++ // <![CDATA[ something
-	  , CDATA_ENDING: S++ // ]
-	  , CDATA_ENDING_2: S++ // ]]
-	  , PROC_INST: S++ // <?hi
-	  , PROC_INST_BODY: S++ // <?hi there
-	  , PROC_INST_ENDING: S++ // <?hi "there" ?
-	  , OPEN_TAG: S++ // <strong
-	  , OPEN_TAG_SLASH: S++ // <strong /
-	  , ATTRIB: S++ // <a
-	  , ATTRIB_NAME: S++ // <a foo
-	  , ATTRIB_NAME_SAW_WHITE: S++ // <a foo _
-	  , ATTRIB_VALUE: S++ // <a foo=
-	  , ATTRIB_VALUE_QUOTED: S++ // <a foo="bar
-	  , ATTRIB_VALUE_CLOSED: S++ // <a foo="bar"
-	  , ATTRIB_VALUE_UNQUOTED: S++ // <a foo=bar
-	  , ATTRIB_VALUE_ENTITY_Q: S++ // <foo bar="&quot;"
-	  , ATTRIB_VALUE_ENTITY_U: S++ // <foo bar=&quot;
-	  , CLOSE_TAG: S++ // </a
-	  , CLOSE_TAG_SAW_WHITE: S++ // </a   >
-	  , SCRIPT: S++ // <script> ...
-	  , SCRIPT_ENDING: S++ // <script> ... <
+	sax.STATE = { BEGIN: S++, // leading byte order mark or whitespace
+	  BEGIN_WHITESPACE: S++, // leading whitespace
+	  TEXT: S++, // general stuff
+	  TEXT_ENTITY: S++, // &amp and such.
+	  OPEN_WAKA: S++, // <
+	  SGML_DECL: S++, // <!BLARG
+	  SGML_DECL_QUOTED: S++, // <!BLARG foo "bar
+	  DOCTYPE: S++, // <!DOCTYPE
+	  DOCTYPE_QUOTED: S++, // <!DOCTYPE "//blah
+	  DOCTYPE_DTD: S++, // <!DOCTYPE "//blah" [ ...
+	  DOCTYPE_DTD_QUOTED: S++, // <!DOCTYPE "//blah" [ "foo
+	  COMMENT_STARTING: S++, // <!-
+	  COMMENT: S++, // <!--
+	  COMMENT_ENDING: S++, // <!-- blah -
+	  COMMENT_ENDED: S++, // <!-- blah --
+	  CDATA: S++, // <![CDATA[ something
+	  CDATA_ENDING: S++, // ]
+	  CDATA_ENDING_2: S++, // ]]
+	  PROC_INST: S++, // <?hi
+	  PROC_INST_BODY: S++, // <?hi there
+	  PROC_INST_ENDING: S++, // <?hi "there" ?
+	  OPEN_TAG: S++, // <strong
+	  OPEN_TAG_SLASH: S++, // <strong /
+	  ATTRIB: S++, // <a
+	  ATTRIB_NAME: S++, // <a foo
+	  ATTRIB_NAME_SAW_WHITE: S++, // <a foo _
+	  ATTRIB_VALUE: S++, // <a foo=
+	  ATTRIB_VALUE_QUOTED: S++, // <a foo="bar
+	  ATTRIB_VALUE_CLOSED: S++, // <a foo="bar"
+	  ATTRIB_VALUE_UNQUOTED: S++, // <a foo=bar
+	  ATTRIB_VALUE_ENTITY_Q: S++, // <foo bar="&quot;"
+	  ATTRIB_VALUE_ENTITY_U: S++, // <foo bar=&quot;
+	  CLOSE_TAG: S++, // </a
+	  CLOSE_TAG_SAW_WHITE: S++, // </a   >
+	  SCRIPT: S++, // <script> ...
+	  SCRIPT_ENDING: S++ // <script> ... <
 	};
 
 	sax.XML_ENTITIES = { "amp": "&",
@@ -1272,7 +1272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Object.keys(sax.ENTITIES).forEach(function (key) {
 	  var e = sax.ENTITIES[key];
-	  var s = typeof e === "number" ? String.fromCharCode(e) : e;
+	  var s = typeof e === 'number' ? String.fromCharCode(e) : e;
 	  sax.ENTITIES[key] = s;
 	});
 
@@ -1325,7 +1325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function strictFail(parser, message) {
-	  if (typeof parser !== "object" || !(parser instanceof SAXParser)) throw new Error("bad call to strictFail");
+	  if (typeof parser !== 'object' || !(parser instanceof SAXParser)) throw new Error('bad call to strictFail');
 	  if (parser.strict) error(parser, message);
 	}
 
@@ -1644,25 +1644,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (c === "!") {
 	          parser.state = S.SGML_DECL;
 	          parser.sgmlDecl = "";
-	        } else if (is(whitespace, c)) {} else if (is(nameStart, c)) {
-	          parser.state = S.OPEN_TAG;
-	          parser.tagName = c;
-	        } else if (c === "/") {
-	          parser.state = S.CLOSE_TAG;
-	          parser.tagName = "";
-	        } else if (c === "?") {
-	          parser.state = S.PROC_INST;
-	          parser.procInstName = parser.procInstBody = "";
-	        } else {
-	          strictFail(parser, "Unencoded <");
-	          // if there was some whitespace, then add that in.
-	          if (parser.startTagPosition + 1 < parser.position) {
-	            var pad = parser.position - parser.startTagPosition;
-	            c = new Array(pad).join(" ") + c;
+	        } else if (is(whitespace, c)) {
+	          // wait for it...
+	        } else if (is(nameStart, c)) {
+	            parser.state = S.OPEN_TAG;
+	            parser.tagName = c;
+	          } else if (c === "/") {
+	            parser.state = S.CLOSE_TAG;
+	            parser.tagName = "";
+	          } else if (c === "?") {
+	            parser.state = S.PROC_INST;
+	            parser.procInstName = parser.procInstBody = "";
+	          } else {
+	            strictFail(parser, "Unencoded <");
+	            // if there was some whitespace, then add that in.
+	            if (parser.startTagPosition + 1 < parser.position) {
+	              var pad = parser.position - parser.startTagPosition;
+	              c = new Array(pad).join(" ") + c;
+	            }
+	            parser.textNode += "<" + c;
+	            parser.state = S.TEXT;
 	          }
-	          parser.textNode += "<" + c;
-	          parser.state = S.TEXT;
-	        }
 	        continue;
 
 	      case S.SGML_DECL:
@@ -1702,15 +1704,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (c === ">") {
 	          parser.state = S.TEXT;
 	          emitNode(parser, "ondoctype", parser.doctype);
-	          parser.doctype = true // just remember that we saw it.
-	          ;
+	          parser.doctype = true; // just remember that we saw it.
 	        } else {
-	          parser.doctype += c;
-	          if (c === "[") parser.state = S.DOCTYPE_DTD;else if (is(quote, c)) {
-	            parser.state = S.DOCTYPE_QUOTED;
-	            parser.q = c;
+	            parser.doctype += c;
+	            if (c === "[") parser.state = S.DOCTYPE_DTD;else if (is(quote, c)) {
+	              parser.state = S.DOCTYPE_QUOTED;
+	              parser.q = c;
+	            }
 	          }
-	        }
 	        continue;
 
 	      case S.DOCTYPE_QUOTED:
@@ -1993,9 +1994,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var index = -1;
 	      var length = arguments.length;
 	      if (!length) {
-	        return "";
+	        return '';
 	      }
-	      var result = "";
+	      var result = '';
 	      while (++index < length) {
 	        var codePoint = Number(arguments[index]);
 	        if (!isFinite(codePoint) || // `NaN`, `+Infinity`, or `-Infinity`
@@ -2003,8 +2004,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        codePoint > 0x10FFFF || // not a valid Unicode code point
 	        floor(codePoint) != codePoint // not an integer
 	        ) {
-	          throw RangeError("Invalid code point: " + codePoint);
-	        }
+	            throw RangeError('Invalid code point: ' + codePoint);
+	          }
 	        if (codePoint <= 0xFFFF) {
 	          // BMP code point
 	          codeUnits.push(codePoint);
@@ -2024,10 +2025,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return result;
 	    };
 	    if (Object.defineProperty) {
-	      Object.defineProperty(String, "fromCodePoint", {
-	        "value": fromCodePoint,
-	        "configurable": true,
-	        "writable": true
+	      Object.defineProperty(String, 'fromCodePoint', {
+	        'value': fromCodePoint,
+	        'configurable': true,
+	        'writable': true
 	      });
 	    } else {
 	      String.fromCodePoint = fromCodePoint;
@@ -2037,8 +2038,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports["default"] = sax;
 	module.exports = exports["default"];
-
-	// wait for it...
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
 
 /***/ },
@@ -2086,11 +2085,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * get the Object implementation, which is slower but will work correctly.
 	 */
 	Buffer.TYPED_ARRAY_SUPPORT = (function () {
+	  function Foo () {}
 	  try {
 	    var buf = new ArrayBuffer(0)
 	    var arr = new Uint8Array(buf)
 	    arr.foo = function () { return 42 }
+	    arr.constructor = Foo
 	    return arr.foo() === 42 && // typed array instances can be augmented
+	        arr.constructor === Foo && // constructor can be set
 	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
 	        new Uint8Array(1).subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
 	  } catch (e) {
@@ -3609,7 +3611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		exports.toByteArray = b64ToByteArray
 		exports.fromByteArray = uint8ToBase64
-	}(false ? (this.base64js = {}) : exports))
+	}( false ? (this.base64js = {}) : exports))
 
 
 /***/ },
@@ -6585,12 +6587,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	var document = __webpack_require__(4)
 	var isArray = __webpack_require__(42)
 
+	var render = __webpack_require__(1)
 	var domIndex = __webpack_require__(43)
 	var patchOp = __webpack_require__(44)
 	module.exports = patch
 
-	function patch(rootNode, patches) {
-	    return patchRecursive(rootNode, patches)
+	function patch(rootNode, patches, renderOptions) {
+	    renderOptions = renderOptions || {}
+	    renderOptions.patch = renderOptions.patch || patchRecursive
+	    renderOptions.render = renderOptions.render || render
+
+	    return renderOptions.patch(rootNode, patches, renderOptions)
 	}
 
 	function patchRecursive(rootNode, patches, renderOptions) {
@@ -6603,11 +6610,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var index = domIndex(rootNode, patches.a, indices)
 	    var ownerDocument = rootNode.ownerDocument
 
-	    if (!renderOptions) {
-	        renderOptions = { patch: patchRecursive }
-	        if (ownerDocument !== document) {
-	            renderOptions.document = ownerDocument
-	        }
+	    if (!renderOptions.document && ownerDocument !== document) {
+	        renderOptions.document = ownerDocument
 	    }
 
 	    for (var i = 0; i < indices.length; i++) {
@@ -6774,7 +6778,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var isWidget = __webpack_require__(10)
 	var VPatch = __webpack_require__(45)
 
-	var render = __webpack_require__(1)
 	var updateWidget = __webpack_require__(46)
 
 	module.exports = applyPatch
@@ -6822,7 +6825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function insertNode(parentNode, vNode, renderOptions) {
-	    var newNode = render(vNode, renderOptions)
+	    var newNode = renderOptions.render(vNode, renderOptions)
 
 	    if (parentNode) {
 	        parentNode.appendChild(newNode)
@@ -6839,7 +6842,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        newNode = domNode
 	    } else {
 	        var parentNode = domNode.parentNode
-	        newNode = render(vText, renderOptions)
+	        newNode = renderOptions.render(vText, renderOptions)
 
 	        if (parentNode && newNode !== domNode) {
 	            parentNode.replaceChild(newNode, domNode)
@@ -6856,7 +6859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (updating) {
 	        newNode = widget.update(leftVNode, domNode) || domNode
 	    } else {
-	        newNode = render(widget, renderOptions)
+	        newNode = renderOptions.render(widget, renderOptions)
 	    }
 
 	    var parentNode = domNode.parentNode
@@ -6874,7 +6877,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function vNodePatch(domNode, leftVNode, vNode, renderOptions) {
 	    var parentNode = domNode.parentNode
-	    var newNode = render(vNode, renderOptions)
+	    var newNode = renderOptions.render(vNode, renderOptions)
 
 	    if (parentNode && newNode !== domNode) {
 	        parentNode.replaceChild(newNode, domNode)
@@ -7386,7 +7389,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return {
 	        keys: keys,     // A hash of key name to index
-	        free: free,     // An array of unkeyed item indices
+	        free: free      // An array of unkeyed item indices
 	    }
 	}
 
@@ -7538,6 +7541,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	function addChild(c, childNodes, tag, props) {
 	    if (typeof c === 'string') {
 	        childNodes.push(new VText(c));
+	    } else if (typeof c === 'number') {
+	        childNodes.push(new VText(String(c)));
 	    } else if (isChild(c)) {
 	        childNodes.push(c);
 	    } else if (isArray(c)) {
@@ -7712,7 +7717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var split = __webpack_require__(53);
 
-	var classIdSplit = /([\.#]?[a-zA-Z0-9_:-]+)/;
+	var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 	var notClassId = /^\.|#/;
 
 	module.exports = parseTag;

@@ -13,7 +13,7 @@ import svg from 'virtual-dom/virtual-hyperscript/svg';
 
 const _parser = sax.parser(true, {
   html5: true,
-  trim: true,
+  trim: false,
   normalize: true,
   lowercase: true
 });
