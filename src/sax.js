@@ -767,6 +767,11 @@ function attrib (parser) {
 }
 
 function openTag (parser, selfClosing) {
+  if (!selfClosing && parser.opt.html5 && parser.tagName.toLowerCase() in sax.VOID_ELEMENTS) {
+    openTag(parser, true);
+    closeTag(parser);
+    return;
+  }
   if (parser.opt.xmlns) {
     // emit namespace binding events
     var tag = parser.tag
@@ -1203,13 +1208,7 @@ function write (chunk) {
         if (is(nameBody, c)) parser.tagName += c
         else {
           newTag(parser)
-          if (c === ">") {
-            if (parser.opt.html5 && parser.tagName.toLowerCase() in sax.VOID_ELEMENTS) {
-              openTag(parser, true)
-              closeTag(parser)
-            }
-            else openTag(parser)
-          }
+          if (c === ">") openTag(parser)
           else if (c === "/") parser.state = S.OPEN_TAG_SLASH
           else {
             if (not(whitespace, c)) strictFail(

@@ -1089,6 +1089,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function openTag(parser, selfClosing) {
+	  if (!selfClosing && parser.opt.html5 && parser.tagName.toLowerCase() in sax.VOID_ELEMENTS) {
+	    openTag(parser, true);
+	    closeTag(parser);
+	    return;
+	  }
 	  if (parser.opt.xmlns) {
 	    // emit namespace binding events
 	    var tag = parser.tag;
@@ -1506,12 +1511,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case S.OPEN_TAG:
 	        if (is(nameBody, c)) parser.tagName += c;else {
 	          newTag(parser);
-	          if (c === ">") {
-	            if (parser.opt.html5 && parser.tagName.toLowerCase() in sax.VOID_ELEMENTS) {
-	              openTag(parser, true);
-	              closeTag(parser);
-	            } else openTag(parser);
-	          } else if (c === "/") parser.state = S.OPEN_TAG_SLASH;else {
+	          if (c === ">") openTag(parser);else if (c === "/") parser.state = S.OPEN_TAG_SLASH;else {
 	            if (not(whitespace, c)) strictFail(parser, "Invalid character in tag name");
 	            parser.state = S.ATTRIB;
 	          }
