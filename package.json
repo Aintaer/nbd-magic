@@ -1,6 +1,6 @@
 {
   "name": "nbd-magic",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A Magical View class for nbd.js",
   "main": "dist/Magic.js",
   "scripts": {
