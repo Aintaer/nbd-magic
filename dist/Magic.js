@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("nbd/View"), require("nbd/util/extend"), require("nbd/util/async")) : factory(root["nbd/View"], root["nbd/util/extend"], root["nbd/util/async"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -66,27 +66,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _nbdView = __webpack_require__(13);
+	var _nbdView = __webpack_require__(1);
 
 	var _nbdView2 = _interopRequireDefault(_nbdView);
 
-	var _nbdUtilExtend = __webpack_require__(14);
+	var _nbdUtilExtend = __webpack_require__(2);
 
 	var _nbdUtilExtend2 = _interopRequireDefault(_nbdUtilExtend);
 
-	var _nbdUtilAsync = __webpack_require__(15);
+	var _nbdUtilAsync = __webpack_require__(3);
 
 	var _nbdUtilAsync2 = _interopRequireDefault(_nbdUtilAsync);
 
-	var _sax = __webpack_require__(16);
+	var _sax = __webpack_require__(4);
 
 	var _sax2 = _interopRequireDefault(_sax);
 
-	var _transformTag = __webpack_require__(40);
+	var _transformTag = __webpack_require__(28);
 
 	var _transformTag2 = _interopRequireDefault(_transformTag);
 
-	var _virtualDomVdomCreateElement = __webpack_require__(1);
+	var _virtualDomVdomCreateElement = __webpack_require__(29);
 
 	var _virtualDomVdomCreateElement2 = _interopRequireDefault(_virtualDomVdomCreateElement);
 
@@ -106,7 +106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _virtualDomVirtualHyperscriptSvg2 = _interopRequireDefault(_virtualDomVirtualHyperscriptSvg);
 
-	var _parser = _sax2['default'].parser(true, {
+	var _parser = _sax2['default'].parser(false, {
 	  html5: true,
 	  trim: false,
 	  normalize: true,
@@ -316,332 +316,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var document = __webpack_require__(4)
-
-	var applyProperties = __webpack_require__(6)
-
-	var isVNode = __webpack_require__(9)
-	var isVText = __webpack_require__(2)
-	var isWidget = __webpack_require__(10)
-	var handleThunk = __webpack_require__(11)
-
-	module.exports = createElement
-
-	function createElement(vnode, opts) {
-	    var doc = opts ? opts.document || document : document
-	    var warn = opts ? opts.warn : null
-
-	    vnode = handleThunk(vnode).a
-
-	    if (isWidget(vnode)) {
-	        return vnode.init()
-	    } else if (isVText(vnode)) {
-	        return doc.createTextNode(vnode.text)
-	    } else if (!isVNode(vnode)) {
-	        if (warn) {
-	            warn("Item is not a valid virtual dom node", vnode)
-	        }
-	        return null
-	    }
-
-	    var node = (vnode.namespace === null) ?
-	        doc.createElement(vnode.tagName) :
-	        doc.createElementNS(vnode.namespace, vnode.tagName)
-
-	    var props = vnode.properties
-	    applyProperties(node, props)
-
-	    var children = vnode.children
-
-	    for (var i = 0; i < children.length; i++) {
-	        var childNode = createElement(children[i], opts)
-	        if (childNode) {
-	            node.appendChild(childNode)
-	        }
-	    }
-
-	    return node
-	}
-
+	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var version = __webpack_require__(3)
-
-	module.exports = isVirtualText
-
-	function isVirtualText(x) {
-	    return x && x.type === "VirtualText" && x.version === version
-	}
-
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = "2"
-
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
-	    typeof window !== 'undefined' ? window : {}
-	var minDoc = __webpack_require__(5);
-
-	if (typeof document !== 'undefined') {
-	    module.exports = document;
-	} else {
-	    var doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'];
-
-	    if (!doccy) {
-	        doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'] = minDoc;
-	    }
-
-	    module.exports = doccy;
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	/* (ignored) */
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(7)
-	var isHook = __webpack_require__(8)
-
-	module.exports = applyProperties
-
-	function applyProperties(node, props, previous) {
-	    for (var propName in props) {
-	        var propValue = props[propName]
-
-	        if (propValue === undefined) {
-	            removeProperty(node, propName, propValue, previous);
-	        } else if (isHook(propValue)) {
-	            removeProperty(node, propName, propValue, previous)
-	            if (propValue.hook) {
-	                propValue.hook(node,
-	                    propName,
-	                    previous ? previous[propName] : undefined)
-	            }
-	        } else {
-	            if (isObject(propValue)) {
-	                patchObject(node, props, previous, propName, propValue);
-	            } else {
-	                node[propName] = propValue
-	            }
-	        }
-	    }
-	}
-
-	function removeProperty(node, propName, propValue, previous) {
-	    if (previous) {
-	        var previousValue = previous[propName]
-
-	        if (!isHook(previousValue)) {
-	            if (propName === "attributes") {
-	                for (var attrName in previousValue) {
-	                    node.removeAttribute(attrName)
-	                }
-	            } else if (propName === "style") {
-	                for (var i in previousValue) {
-	                    node.style[i] = ""
-	                }
-	            } else if (typeof previousValue === "string") {
-	                node[propName] = ""
-	            } else {
-	                node[propName] = null
-	            }
-	        } else if (previousValue.unhook) {
-	            previousValue.unhook(node, propName, propValue)
-	        }
-	    }
-	}
-
-	function patchObject(node, props, previous, propName, propValue) {
-	    var previousValue = previous ? previous[propName] : undefined
-
-	    // Set attributes
-	    if (propName === "attributes") {
-	        for (var attrName in propValue) {
-	            var attrValue = propValue[attrName]
-
-	            if (attrValue === undefined) {
-	                node.removeAttribute(attrName)
-	            } else {
-	                node.setAttribute(attrName, attrValue)
-	            }
-	        }
-
-	        return
-	    }
-
-	    if(previousValue && isObject(previousValue) &&
-	        getPrototype(previousValue) !== getPrototype(propValue)) {
-	        node[propName] = propValue
-	        return
-	    }
-
-	    if (!isObject(node[propName])) {
-	        node[propName] = {}
-	    }
-
-	    var replacer = propName === "style" ? "" : undefined
-
-	    for (var k in propValue) {
-	        var value = propValue[k]
-	        node[propName][k] = (value === undefined) ? replacer : value
-	    }
-	}
-
-	function getPrototype(value) {
-	    if (Object.getPrototypeOf) {
-	        return Object.getPrototypeOf(value)
-	    } else if (value.__proto__) {
-	        return value.__proto__
-	    } else if (value.constructor) {
-	        return value.constructor.prototype
-	    }
-	}
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = function isObject(x) {
-		return typeof x === "object" && x !== null;
-	};
-
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	module.exports = isHook
-
-	function isHook(hook) {
-	    return hook &&
-	      (typeof hook.hook === "function" && !hook.hasOwnProperty("hook") ||
-	       typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
-	}
-
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var version = __webpack_require__(3)
-
-	module.exports = isVirtualNode
-
-	function isVirtualNode(x) {
-	    return x && x.type === "VirtualNode" && x.version === version
-	}
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	module.exports = isWidget
-
-	function isWidget(w) {
-	    return w && w.type === "Widget"
-	}
-
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isVNode = __webpack_require__(9)
-	var isVText = __webpack_require__(2)
-	var isWidget = __webpack_require__(10)
-	var isThunk = __webpack_require__(12)
-
-	module.exports = handleThunk
-
-	function handleThunk(a, b) {
-	    var renderedA = a
-	    var renderedB = b
-
-	    if (isThunk(b)) {
-	        renderedB = renderThunk(b, a)
-	    }
-
-	    if (isThunk(a)) {
-	        renderedA = renderThunk(a, null)
-	    }
-
-	    return {
-	        a: renderedA,
-	        b: renderedB
-	    }
-	}
-
-	function renderThunk(thunk, previous) {
-	    var renderedThunk = thunk.vnode
-
-	    if (!renderedThunk) {
-	        renderedThunk = thunk.vnode = thunk.render(previous)
-	    }
-
-	    if (!(isVNode(renderedThunk) ||
-	            isVText(renderedThunk) ||
-	            isWidget(renderedThunk))) {
-	        throw new Error("thunk did not return a valid node");
-	    }
-
-	    return renderedThunk
-	}
-
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	module.exports = isThunk
-
-	function isThunk(t) {
-	    return t && t.type === "Thunk"
-	}
-
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_13__;
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_14__;
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_15__;
-
-/***/ },
-/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {"use strict";
@@ -822,7 +514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	try {
-	  var Stream = __webpack_require__(21).Stream;
+	  var Stream = __webpack_require__(9).Stream;
 	} catch (ex) {
 	  var Stream = function Stream() {};
 	}
@@ -883,7 +575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	SAXStream.prototype.write = function (data) {
 	  if (typeof Buffer === 'function' && typeof Buffer.isBuffer === 'function' && Buffer.isBuffer(data)) {
 	    if (!this._decoder) {
-	      var SD = __webpack_require__(32).StringDecoder;
+	      var SD = __webpack_require__(21).StringDecoder;
 	      this._decoder = new SD('utf8');
 	    }
 	    data = this._decoder.write(data);
@@ -2038,10 +1730,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports["default"] = sax;
 	module.exports = exports["default"];
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
 
 /***/ },
-/* 17 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
@@ -2051,9 +1743,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @license  MIT
 	 */
 
-	var base64 = __webpack_require__(18)
-	var ieee754 = __webpack_require__(19)
-	var isArray = __webpack_require__(20)
+	var base64 = __webpack_require__(6)
+	var ieee754 = __webpack_require__(7)
+	var isArray = __webpack_require__(8)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -2085,14 +1777,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * get the Object implementation, which is slower but will work correctly.
 	 */
 	Buffer.TYPED_ARRAY_SUPPORT = (function () {
-	  function Foo () {}
 	  try {
 	    var buf = new ArrayBuffer(0)
 	    var arr = new Uint8Array(buf)
 	    arr.foo = function () { return 42 }
-	    arr.constructor = Foo
 	    return arr.foo() === 42 && // typed array instances can be augmented
-	        arr.constructor === Foo && // constructor can be set
 	        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
 	        new Uint8Array(1).subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
 	  } catch (e) {
@@ -3482,10 +3171,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
 
 /***/ },
-/* 18 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -3615,7 +3304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 7 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -3705,7 +3394,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 8 */
 /***/ function(module, exports) {
 
 	
@@ -3744,7 +3433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 21 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -3770,15 +3459,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Stream;
 
-	var EE = __webpack_require__(22).EventEmitter;
-	var inherits = __webpack_require__(23);
+	var EE = __webpack_require__(10).EventEmitter;
+	var inherits = __webpack_require__(11);
 
 	inherits(Stream, EE);
-	Stream.Readable = __webpack_require__(24);
-	Stream.Writable = __webpack_require__(36);
-	Stream.Duplex = __webpack_require__(37);
-	Stream.Transform = __webpack_require__(38);
-	Stream.PassThrough = __webpack_require__(39);
+	Stream.Readable = __webpack_require__(12);
+	Stream.Writable = __webpack_require__(24);
+	Stream.Duplex = __webpack_require__(25);
+	Stream.Transform = __webpack_require__(26);
+	Stream.PassThrough = __webpack_require__(27);
 
 	// Backwards-compat with node 0.4.x
 	Stream.Stream = Stream;
@@ -3877,7 +3566,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 22 */
+/* 10 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -4184,7 +3873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 23 */
+/* 11 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -4213,354 +3902,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 24 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(29);
-	exports.Stream = __webpack_require__(21);
+	exports = module.exports = __webpack_require__(13);
+	exports.Stream = __webpack_require__(9);
 	exports.Readable = exports;
-	exports.Writable = __webpack_require__(33);
-	exports.Duplex = __webpack_require__(25);
-	exports.Transform = __webpack_require__(34);
-	exports.PassThrough = __webpack_require__(35);
+	exports.Writable = __webpack_require__(20);
+	exports.Duplex = __webpack_require__(19);
+	exports.Transform = __webpack_require__(22);
+	exports.PassThrough = __webpack_require__(23);
 
 
 /***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-	// a duplex stream is just a stream that is both readable and writable.
-	// Since JS doesn't have multiple prototypal inheritance, this class
-	// prototypally inherits from Readable, and then parasitically from
-	// Writable.
-
-	module.exports = Duplex;
-
-	/*<replacement>*/
-	var objectKeys = Object.keys || function (obj) {
-	  var keys = [];
-	  for (var key in obj) keys.push(key);
-	  return keys;
-	}
-	/*</replacement>*/
-
-
-	/*<replacement>*/
-	var util = __webpack_require__(27);
-	util.inherits = __webpack_require__(28);
-	/*</replacement>*/
-
-	var Readable = __webpack_require__(29);
-	var Writable = __webpack_require__(33);
-
-	util.inherits(Duplex, Readable);
-
-	forEach(objectKeys(Writable.prototype), function(method) {
-	  if (!Duplex.prototype[method])
-	    Duplex.prototype[method] = Writable.prototype[method];
-	});
-
-	function Duplex(options) {
-	  if (!(this instanceof Duplex))
-	    return new Duplex(options);
-
-	  Readable.call(this, options);
-	  Writable.call(this, options);
-
-	  if (options && options.readable === false)
-	    this.readable = false;
-
-	  if (options && options.writable === false)
-	    this.writable = false;
-
-	  this.allowHalfOpen = true;
-	  if (options && options.allowHalfOpen === false)
-	    this.allowHalfOpen = false;
-
-	  this.once('end', onend);
-	}
-
-	// the no-half-open enforcer
-	function onend() {
-	  // if we allow half-open state, or if the writable side ended,
-	  // then we're ok.
-	  if (this.allowHalfOpen || this._writableState.ended)
-	    return;
-
-	  // no more data can be written.
-	  // But allow more writes to happen in this tick.
-	  process.nextTick(this.end.bind(this));
-	}
-
-	function forEach (xs, f) {
-	  for (var i = 0, l = xs.length; i < l; i++) {
-	    f(xs[i], i);
-	  }
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	// shim for using process in browser
-
-	var process = module.exports = {};
-	var queue = [];
-	var draining = false;
-	var currentQueue;
-	var queueIndex = -1;
-
-	function cleanUpNextTick() {
-	    draining = false;
-	    if (currentQueue.length) {
-	        queue = currentQueue.concat(queue);
-	    } else {
-	        queueIndex = -1;
-	    }
-	    if (queue.length) {
-	        drainQueue();
-	    }
-	}
-
-	function drainQueue() {
-	    if (draining) {
-	        return;
-	    }
-	    var timeout = setTimeout(cleanUpNextTick);
-	    draining = true;
-
-	    var len = queue.length;
-	    while(len) {
-	        currentQueue = queue;
-	        queue = [];
-	        while (++queueIndex < len) {
-	            currentQueue[queueIndex].run();
-	        }
-	        queueIndex = -1;
-	        len = queue.length;
-	    }
-	    currentQueue = null;
-	    draining = false;
-	    clearTimeout(timeout);
-	}
-
-	process.nextTick = function (fun) {
-	    var args = new Array(arguments.length - 1);
-	    if (arguments.length > 1) {
-	        for (var i = 1; i < arguments.length; i++) {
-	            args[i - 1] = arguments[i];
-	        }
-	    }
-	    queue.push(new Item(fun, args));
-	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
-	    }
-	};
-
-	// v8 likes predictible objects
-	function Item(fun, array) {
-	    this.fun = fun;
-	    this.array = array;
-	}
-	Item.prototype.run = function () {
-	    this.fun.apply(null, this.array);
-	};
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	process.version = ''; // empty string to avoid regexp issues
-	process.versions = {};
-
-	function noop() {}
-
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-
-	// TODO(shtylman)
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-	process.umask = function() { return 0; };
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-	// NOTE: These type checking functions intentionally don't use `instanceof`
-	// because it is fragile and can be easily faked with `Object.create()`.
-	function isArray(ar) {
-	  return Array.isArray(ar);
-	}
-	exports.isArray = isArray;
-
-	function isBoolean(arg) {
-	  return typeof arg === 'boolean';
-	}
-	exports.isBoolean = isBoolean;
-
-	function isNull(arg) {
-	  return arg === null;
-	}
-	exports.isNull = isNull;
-
-	function isNullOrUndefined(arg) {
-	  return arg == null;
-	}
-	exports.isNullOrUndefined = isNullOrUndefined;
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-	exports.isNumber = isNumber;
-
-	function isString(arg) {
-	  return typeof arg === 'string';
-	}
-	exports.isString = isString;
-
-	function isSymbol(arg) {
-	  return typeof arg === 'symbol';
-	}
-	exports.isSymbol = isSymbol;
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-	exports.isUndefined = isUndefined;
-
-	function isRegExp(re) {
-	  return isObject(re) && objectToString(re) === '[object RegExp]';
-	}
-	exports.isRegExp = isRegExp;
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-	exports.isObject = isObject;
-
-	function isDate(d) {
-	  return isObject(d) && objectToString(d) === '[object Date]';
-	}
-	exports.isDate = isDate;
-
-	function isError(e) {
-	  return isObject(e) &&
-	      (objectToString(e) === '[object Error]' || e instanceof Error);
-	}
-	exports.isError = isError;
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-	exports.isFunction = isFunction;
-
-	function isPrimitive(arg) {
-	  return arg === null ||
-	         typeof arg === 'boolean' ||
-	         typeof arg === 'number' ||
-	         typeof arg === 'string' ||
-	         typeof arg === 'symbol' ||  // ES6 symbol
-	         typeof arg === 'undefined';
-	}
-	exports.isPrimitive = isPrimitive;
-
-	function isBuffer(arg) {
-	  return Buffer.isBuffer(arg);
-	}
-	exports.isBuffer = isBuffer;
-
-	function objectToString(o) {
-	  return Object.prototype.toString.call(o);
-	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	if (typeof Object.create === 'function') {
-	  // implementation from standard node.js 'util' module
-	  module.exports = function inherits(ctor, superCtor) {
-	    ctor.super_ = superCtor
-	    ctor.prototype = Object.create(superCtor.prototype, {
-	      constructor: {
-	        value: ctor,
-	        enumerable: false,
-	        writable: true,
-	        configurable: true
-	      }
-	    });
-	  };
-	} else {
-	  // old school shim for old browsers
-	  module.exports = function inherits(ctor, superCtor) {
-	    ctor.super_ = superCtor
-	    var TempCtor = function () {}
-	    TempCtor.prototype = superCtor.prototype
-	    ctor.prototype = new TempCtor()
-	    ctor.prototype.constructor = ctor
-	  }
-	}
-
-
-/***/ },
-/* 29 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -4587,17 +3942,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Readable;
 
 	/*<replacement>*/
-	var isArray = __webpack_require__(30);
+	var isArray = __webpack_require__(15);
 	/*</replacement>*/
 
 
 	/*<replacement>*/
-	var Buffer = __webpack_require__(17).Buffer;
+	var Buffer = __webpack_require__(5).Buffer;
 	/*</replacement>*/
 
 	Readable.ReadableState = ReadableState;
 
-	var EE = __webpack_require__(22).EventEmitter;
+	var EE = __webpack_require__(10).EventEmitter;
 
 	/*<replacement>*/
 	if (!EE.listenerCount) EE.listenerCount = function(emitter, type) {
@@ -4605,18 +3960,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	/*</replacement>*/
 
-	var Stream = __webpack_require__(21);
+	var Stream = __webpack_require__(9);
 
 	/*<replacement>*/
-	var util = __webpack_require__(27);
-	util.inherits = __webpack_require__(28);
+	var util = __webpack_require__(16);
+	util.inherits = __webpack_require__(17);
 	/*</replacement>*/
 
 	var StringDecoder;
 
 
 	/*<replacement>*/
-	var debug = __webpack_require__(31);
+	var debug = __webpack_require__(18);
 	if (debug && debug.debuglog) {
 	  debug = debug.debuglog('stream');
 	} else {
@@ -4628,7 +3983,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	util.inherits(Readable, Stream);
 
 	function ReadableState(options, stream) {
-	  var Duplex = __webpack_require__(25);
+	  var Duplex = __webpack_require__(19);
 
 	  options = options || {};
 
@@ -4689,14 +4044,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.encoding = null;
 	  if (options.encoding) {
 	    if (!StringDecoder)
-	      StringDecoder = __webpack_require__(32).StringDecoder;
+	      StringDecoder = __webpack_require__(21).StringDecoder;
 	    this.decoder = new StringDecoder(options.encoding);
 	    this.encoding = options.encoding;
 	  }
 	}
 
 	function Readable(options) {
-	  var Duplex = __webpack_require__(25);
+	  var Duplex = __webpack_require__(19);
 
 	  if (!(this instanceof Readable))
 	    return new Readable(options);
@@ -4799,7 +4154,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// backwards compatibility.
 	Readable.prototype.setEncoding = function(enc) {
 	  if (!StringDecoder)
-	    StringDecoder = __webpack_require__(32).StringDecoder;
+	    StringDecoder = __webpack_require__(21).StringDecoder;
 	  this._readableState.decoder = new StringDecoder(enc);
 	  this._readableState.encoding = enc;
 	  return this;
@@ -5515,10 +4870,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return -1;
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
-/* 30 */
+/* 14 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+
+	var process = module.exports = {};
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+
+	function cleanUpNextTick() {
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = setTimeout(cleanUpNextTick);
+	    draining = true;
+
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            currentQueue[queueIndex].run();
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    clearTimeout(timeout);
+	}
+
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        setTimeout(drainQueue, 0);
+	    }
+	};
+
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	// TODO(shtylman)
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -5527,16 +4978,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	/* (ignored) */
-
-/***/ },
-/* 32 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// Copyright Joyent, Inc. and other Node contributors.
+	/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
 	//
 	// Permission is hereby granted, free of charge, to any person obtaining a
 	// copy of this software and associated documentation files (the
@@ -5557,210 +5002,227 @@ return /******/ (function(modules) { // webpackBootstrap
 	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	var Buffer = __webpack_require__(17).Buffer;
-
-	var isBufferEncoding = Buffer.isEncoding
-	  || function(encoding) {
-	       switch (encoding && encoding.toLowerCase()) {
-	         case 'hex': case 'utf8': case 'utf-8': case 'ascii': case 'binary': case 'base64': case 'ucs2': case 'ucs-2': case 'utf16le': case 'utf-16le': case 'raw': return true;
-	         default: return false;
-	       }
-	     }
-
-
-	function assertEncoding(encoding) {
-	  if (encoding && !isBufferEncoding(encoding)) {
-	    throw new Error('Unknown encoding: ' + encoding);
-	  }
+	// NOTE: These type checking functions intentionally don't use `instanceof`
+	// because it is fragile and can be easily faked with `Object.create()`.
+	function isArray(ar) {
+	  return Array.isArray(ar);
 	}
+	exports.isArray = isArray;
 
-	// StringDecoder provides an interface for efficiently splitting a series of
-	// buffers into a series of JS strings without breaking apart multi-byte
-	// characters. CESU-8 is handled as part of the UTF-8 encoding.
-	//
-	// @TODO Handling all encodings inside a single object makes it very difficult
-	// to reason about this code, so it should be split up in the future.
-	// @TODO There should be a utf8-strict encoding that rejects invalid UTF-8 code
-	// points as used by CESU-8.
-	var StringDecoder = exports.StringDecoder = function(encoding) {
-	  this.encoding = (encoding || 'utf8').toLowerCase().replace(/[-_]/, '');
-	  assertEncoding(encoding);
-	  switch (this.encoding) {
-	    case 'utf8':
-	      // CESU-8 represents each of Surrogate Pair by 3-bytes
-	      this.surrogateSize = 3;
-	      break;
-	    case 'ucs2':
-	    case 'utf16le':
-	      // UTF-16 represents each of Surrogate Pair by 2-bytes
-	      this.surrogateSize = 2;
-	      this.detectIncompleteChar = utf16DetectIncompleteChar;
-	      break;
-	    case 'base64':
-	      // Base-64 stores 3 bytes in 4 chars, and pads the remainder.
-	      this.surrogateSize = 3;
-	      this.detectIncompleteChar = base64DetectIncompleteChar;
-	      break;
-	    default:
-	      this.write = passThroughWrite;
-	      return;
-	  }
-
-	  // Enough space to store all bytes of a single character. UTF-8 needs 4
-	  // bytes, but CESU-8 may require up to 6 (3 bytes per surrogate).
-	  this.charBuffer = new Buffer(6);
-	  // Number of bytes received for the current incomplete multi-byte character.
-	  this.charReceived = 0;
-	  // Number of bytes expected for the current incomplete multi-byte character.
-	  this.charLength = 0;
-	};
-
-
-	// write decodes the given buffer and returns it as JS string that is
-	// guaranteed to not contain any partial multi-byte characters. Any partial
-	// character found at the end of the buffer is buffered up, and will be
-	// returned when calling write again with the remaining bytes.
-	//
-	// Note: Converting a Buffer containing an orphan surrogate to a String
-	// currently works, but converting a String to a Buffer (via `new Buffer`, or
-	// Buffer#write) will replace incomplete surrogates with the unicode
-	// replacement character. See https://codereview.chromium.org/121173009/ .
-	StringDecoder.prototype.write = function(buffer) {
-	  var charStr = '';
-	  // if our last write ended with an incomplete multibyte character
-	  while (this.charLength) {
-	    // determine how many remaining bytes this buffer has to offer for this char
-	    var available = (buffer.length >= this.charLength - this.charReceived) ?
-	        this.charLength - this.charReceived :
-	        buffer.length;
-
-	    // add the new bytes to the char buffer
-	    buffer.copy(this.charBuffer, this.charReceived, 0, available);
-	    this.charReceived += available;
-
-	    if (this.charReceived < this.charLength) {
-	      // still not enough chars in this buffer? wait for more ...
-	      return '';
-	    }
-
-	    // remove bytes belonging to the current character from the buffer
-	    buffer = buffer.slice(available, buffer.length);
-
-	    // get the character that was split
-	    charStr = this.charBuffer.slice(0, this.charLength).toString(this.encoding);
-
-	    // CESU-8: lead surrogate (D800-DBFF) is also the incomplete character
-	    var charCode = charStr.charCodeAt(charStr.length - 1);
-	    if (charCode >= 0xD800 && charCode <= 0xDBFF) {
-	      this.charLength += this.surrogateSize;
-	      charStr = '';
-	      continue;
-	    }
-	    this.charReceived = this.charLength = 0;
-
-	    // if there are no more bytes in this buffer, just emit our char
-	    if (buffer.length === 0) {
-	      return charStr;
-	    }
-	    break;
-	  }
-
-	  // determine and set charLength / charReceived
-	  this.detectIncompleteChar(buffer);
-
-	  var end = buffer.length;
-	  if (this.charLength) {
-	    // buffer the incomplete character bytes we got
-	    buffer.copy(this.charBuffer, 0, buffer.length - this.charReceived, end);
-	    end -= this.charReceived;
-	  }
-
-	  charStr += buffer.toString(this.encoding, 0, end);
-
-	  var end = charStr.length - 1;
-	  var charCode = charStr.charCodeAt(end);
-	  // CESU-8: lead surrogate (D800-DBFF) is also the incomplete character
-	  if (charCode >= 0xD800 && charCode <= 0xDBFF) {
-	    var size = this.surrogateSize;
-	    this.charLength += size;
-	    this.charReceived += size;
-	    this.charBuffer.copy(this.charBuffer, size, 0, size);
-	    buffer.copy(this.charBuffer, 0, 0, size);
-	    return charStr.substring(0, end);
-	  }
-
-	  // or just emit the charStr
-	  return charStr;
-	};
-
-	// detectIncompleteChar determines if there is an incomplete UTF-8 character at
-	// the end of the given buffer. If so, it sets this.charLength to the byte
-	// length that character, and sets this.charReceived to the number of bytes
-	// that are available for this character.
-	StringDecoder.prototype.detectIncompleteChar = function(buffer) {
-	  // determine how many bytes we have to check at the end of this buffer
-	  var i = (buffer.length >= 3) ? 3 : buffer.length;
-
-	  // Figure out if one of the last i bytes of our buffer announces an
-	  // incomplete char.
-	  for (; i > 0; i--) {
-	    var c = buffer[buffer.length - i];
-
-	    // See http://en.wikipedia.org/wiki/UTF-8#Description
-
-	    // 110XXXXX
-	    if (i == 1 && c >> 5 == 0x06) {
-	      this.charLength = 2;
-	      break;
-	    }
-
-	    // 1110XXXX
-	    if (i <= 2 && c >> 4 == 0x0E) {
-	      this.charLength = 3;
-	      break;
-	    }
-
-	    // 11110XXX
-	    if (i <= 3 && c >> 3 == 0x1E) {
-	      this.charLength = 4;
-	      break;
-	    }
-	  }
-	  this.charReceived = i;
-	};
-
-	StringDecoder.prototype.end = function(buffer) {
-	  var res = '';
-	  if (buffer && buffer.length)
-	    res = this.write(buffer);
-
-	  if (this.charReceived) {
-	    var cr = this.charReceived;
-	    var buf = this.charBuffer;
-	    var enc = this.encoding;
-	    res += buf.slice(0, cr).toString(enc);
-	  }
-
-	  return res;
-	};
-
-	function passThroughWrite(buffer) {
-	  return buffer.toString(this.encoding);
+	function isBoolean(arg) {
+	  return typeof arg === 'boolean';
 	}
+	exports.isBoolean = isBoolean;
 
-	function utf16DetectIncompleteChar(buffer) {
-	  this.charReceived = buffer.length % 2;
-	  this.charLength = this.charReceived ? 2 : 0;
+	function isNull(arg) {
+	  return arg === null;
 	}
+	exports.isNull = isNull;
 
-	function base64DetectIncompleteChar(buffer) {
-	  this.charReceived = buffer.length % 3;
-	  this.charLength = this.charReceived ? 3 : 0;
+	function isNullOrUndefined(arg) {
+	  return arg == null;
+	}
+	exports.isNullOrUndefined = isNullOrUndefined;
+
+	function isNumber(arg) {
+	  return typeof arg === 'number';
+	}
+	exports.isNumber = isNumber;
+
+	function isString(arg) {
+	  return typeof arg === 'string';
+	}
+	exports.isString = isString;
+
+	function isSymbol(arg) {
+	  return typeof arg === 'symbol';
+	}
+	exports.isSymbol = isSymbol;
+
+	function isUndefined(arg) {
+	  return arg === void 0;
+	}
+	exports.isUndefined = isUndefined;
+
+	function isRegExp(re) {
+	  return isObject(re) && objectToString(re) === '[object RegExp]';
+	}
+	exports.isRegExp = isRegExp;
+
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
+	}
+	exports.isObject = isObject;
+
+	function isDate(d) {
+	  return isObject(d) && objectToString(d) === '[object Date]';
+	}
+	exports.isDate = isDate;
+
+	function isError(e) {
+	  return isObject(e) &&
+	      (objectToString(e) === '[object Error]' || e instanceof Error);
+	}
+	exports.isError = isError;
+
+	function isFunction(arg) {
+	  return typeof arg === 'function';
+	}
+	exports.isFunction = isFunction;
+
+	function isPrimitive(arg) {
+	  return arg === null ||
+	         typeof arg === 'boolean' ||
+	         typeof arg === 'number' ||
+	         typeof arg === 'string' ||
+	         typeof arg === 'symbol' ||  // ES6 symbol
+	         typeof arg === 'undefined';
+	}
+	exports.isPrimitive = isPrimitive;
+
+	function isBuffer(arg) {
+	  return Buffer.isBuffer(arg);
+	}
+	exports.isBuffer = isBuffer;
+
+	function objectToString(o) {
+	  return Object.prototype.toString.call(o);
+	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	if (typeof Object.create === 'function') {
+	  // implementation from standard node.js 'util' module
+	  module.exports = function inherits(ctor, superCtor) {
+	    ctor.super_ = superCtor
+	    ctor.prototype = Object.create(superCtor.prototype, {
+	      constructor: {
+	        value: ctor,
+	        enumerable: false,
+	        writable: true,
+	        configurable: true
+	      }
+	    });
+	  };
+	} else {
+	  // old school shim for old browsers
+	  module.exports = function inherits(ctor, superCtor) {
+	    ctor.super_ = superCtor
+	    var TempCtor = function () {}
+	    TempCtor.prototype = superCtor.prototype
+	    ctor.prototype = new TempCtor()
+	    ctor.prototype.constructor = ctor
+	  }
 	}
 
 
 /***/ },
-/* 33 */
+/* 18 */
+/***/ function(module, exports) {
+
+	/* (ignored) */
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+	// a duplex stream is just a stream that is both readable and writable.
+	// Since JS doesn't have multiple prototypal inheritance, this class
+	// prototypally inherits from Readable, and then parasitically from
+	// Writable.
+
+	module.exports = Duplex;
+
+	/*<replacement>*/
+	var objectKeys = Object.keys || function (obj) {
+	  var keys = [];
+	  for (var key in obj) keys.push(key);
+	  return keys;
+	}
+	/*</replacement>*/
+
+
+	/*<replacement>*/
+	var util = __webpack_require__(16);
+	util.inherits = __webpack_require__(17);
+	/*</replacement>*/
+
+	var Readable = __webpack_require__(13);
+	var Writable = __webpack_require__(20);
+
+	util.inherits(Duplex, Readable);
+
+	forEach(objectKeys(Writable.prototype), function(method) {
+	  if (!Duplex.prototype[method])
+	    Duplex.prototype[method] = Writable.prototype[method];
+	});
+
+	function Duplex(options) {
+	  if (!(this instanceof Duplex))
+	    return new Duplex(options);
+
+	  Readable.call(this, options);
+	  Writable.call(this, options);
+
+	  if (options && options.readable === false)
+	    this.readable = false;
+
+	  if (options && options.writable === false)
+	    this.writable = false;
+
+	  this.allowHalfOpen = true;
+	  if (options && options.allowHalfOpen === false)
+	    this.allowHalfOpen = false;
+
+	  this.once('end', onend);
+	}
+
+	// the no-half-open enforcer
+	function onend() {
+	  // if we allow half-open state, or if the writable side ended,
+	  // then we're ok.
+	  if (this.allowHalfOpen || this._writableState.ended)
+	    return;
+
+	  // no more data can be written.
+	  // But allow more writes to happen in this tick.
+	  process.nextTick(this.end.bind(this));
+	}
+
+	function forEach (xs, f) {
+	  for (var i = 0, l = xs.length; i < l; i++) {
+	    f(xs[i], i);
+	  }
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+
+/***/ },
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -5791,18 +5253,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Writable;
 
 	/*<replacement>*/
-	var Buffer = __webpack_require__(17).Buffer;
+	var Buffer = __webpack_require__(5).Buffer;
 	/*</replacement>*/
 
 	Writable.WritableState = WritableState;
 
 
 	/*<replacement>*/
-	var util = __webpack_require__(27);
-	util.inherits = __webpack_require__(28);
+	var util = __webpack_require__(16);
+	util.inherits = __webpack_require__(17);
 	/*</replacement>*/
 
-	var Stream = __webpack_require__(21);
+	var Stream = __webpack_require__(9);
 
 	util.inherits(Writable, Stream);
 
@@ -5813,7 +5275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function WritableState(options, stream) {
-	  var Duplex = __webpack_require__(25);
+	  var Duplex = __webpack_require__(19);
 
 	  options = options || {};
 
@@ -5901,7 +5363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function Writable(options) {
-	  var Duplex = __webpack_require__(25);
+	  var Duplex = __webpack_require__(19);
 
 	  // Writable ctor is applied to Duplexes, though they're not
 	  // instanceof Writable, they're instanceof Readable.
@@ -6241,10 +5703,237 @@ return /******/ (function(modules) { // webpackBootstrap
 	  state.ended = true;
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
 
 /***/ },
-/* 34 */
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+	var Buffer = __webpack_require__(5).Buffer;
+
+	var isBufferEncoding = Buffer.isEncoding
+	  || function(encoding) {
+	       switch (encoding && encoding.toLowerCase()) {
+	         case 'hex': case 'utf8': case 'utf-8': case 'ascii': case 'binary': case 'base64': case 'ucs2': case 'ucs-2': case 'utf16le': case 'utf-16le': case 'raw': return true;
+	         default: return false;
+	       }
+	     }
+
+
+	function assertEncoding(encoding) {
+	  if (encoding && !isBufferEncoding(encoding)) {
+	    throw new Error('Unknown encoding: ' + encoding);
+	  }
+	}
+
+	// StringDecoder provides an interface for efficiently splitting a series of
+	// buffers into a series of JS strings without breaking apart multi-byte
+	// characters. CESU-8 is handled as part of the UTF-8 encoding.
+	//
+	// @TODO Handling all encodings inside a single object makes it very difficult
+	// to reason about this code, so it should be split up in the future.
+	// @TODO There should be a utf8-strict encoding that rejects invalid UTF-8 code
+	// points as used by CESU-8.
+	var StringDecoder = exports.StringDecoder = function(encoding) {
+	  this.encoding = (encoding || 'utf8').toLowerCase().replace(/[-_]/, '');
+	  assertEncoding(encoding);
+	  switch (this.encoding) {
+	    case 'utf8':
+	      // CESU-8 represents each of Surrogate Pair by 3-bytes
+	      this.surrogateSize = 3;
+	      break;
+	    case 'ucs2':
+	    case 'utf16le':
+	      // UTF-16 represents each of Surrogate Pair by 2-bytes
+	      this.surrogateSize = 2;
+	      this.detectIncompleteChar = utf16DetectIncompleteChar;
+	      break;
+	    case 'base64':
+	      // Base-64 stores 3 bytes in 4 chars, and pads the remainder.
+	      this.surrogateSize = 3;
+	      this.detectIncompleteChar = base64DetectIncompleteChar;
+	      break;
+	    default:
+	      this.write = passThroughWrite;
+	      return;
+	  }
+
+	  // Enough space to store all bytes of a single character. UTF-8 needs 4
+	  // bytes, but CESU-8 may require up to 6 (3 bytes per surrogate).
+	  this.charBuffer = new Buffer(6);
+	  // Number of bytes received for the current incomplete multi-byte character.
+	  this.charReceived = 0;
+	  // Number of bytes expected for the current incomplete multi-byte character.
+	  this.charLength = 0;
+	};
+
+
+	// write decodes the given buffer and returns it as JS string that is
+	// guaranteed to not contain any partial multi-byte characters. Any partial
+	// character found at the end of the buffer is buffered up, and will be
+	// returned when calling write again with the remaining bytes.
+	//
+	// Note: Converting a Buffer containing an orphan surrogate to a String
+	// currently works, but converting a String to a Buffer (via `new Buffer`, or
+	// Buffer#write) will replace incomplete surrogates with the unicode
+	// replacement character. See https://codereview.chromium.org/121173009/ .
+	StringDecoder.prototype.write = function(buffer) {
+	  var charStr = '';
+	  // if our last write ended with an incomplete multibyte character
+	  while (this.charLength) {
+	    // determine how many remaining bytes this buffer has to offer for this char
+	    var available = (buffer.length >= this.charLength - this.charReceived) ?
+	        this.charLength - this.charReceived :
+	        buffer.length;
+
+	    // add the new bytes to the char buffer
+	    buffer.copy(this.charBuffer, this.charReceived, 0, available);
+	    this.charReceived += available;
+
+	    if (this.charReceived < this.charLength) {
+	      // still not enough chars in this buffer? wait for more ...
+	      return '';
+	    }
+
+	    // remove bytes belonging to the current character from the buffer
+	    buffer = buffer.slice(available, buffer.length);
+
+	    // get the character that was split
+	    charStr = this.charBuffer.slice(0, this.charLength).toString(this.encoding);
+
+	    // CESU-8: lead surrogate (D800-DBFF) is also the incomplete character
+	    var charCode = charStr.charCodeAt(charStr.length - 1);
+	    if (charCode >= 0xD800 && charCode <= 0xDBFF) {
+	      this.charLength += this.surrogateSize;
+	      charStr = '';
+	      continue;
+	    }
+	    this.charReceived = this.charLength = 0;
+
+	    // if there are no more bytes in this buffer, just emit our char
+	    if (buffer.length === 0) {
+	      return charStr;
+	    }
+	    break;
+	  }
+
+	  // determine and set charLength / charReceived
+	  this.detectIncompleteChar(buffer);
+
+	  var end = buffer.length;
+	  if (this.charLength) {
+	    // buffer the incomplete character bytes we got
+	    buffer.copy(this.charBuffer, 0, buffer.length - this.charReceived, end);
+	    end -= this.charReceived;
+	  }
+
+	  charStr += buffer.toString(this.encoding, 0, end);
+
+	  var end = charStr.length - 1;
+	  var charCode = charStr.charCodeAt(end);
+	  // CESU-8: lead surrogate (D800-DBFF) is also the incomplete character
+	  if (charCode >= 0xD800 && charCode <= 0xDBFF) {
+	    var size = this.surrogateSize;
+	    this.charLength += size;
+	    this.charReceived += size;
+	    this.charBuffer.copy(this.charBuffer, size, 0, size);
+	    buffer.copy(this.charBuffer, 0, 0, size);
+	    return charStr.substring(0, end);
+	  }
+
+	  // or just emit the charStr
+	  return charStr;
+	};
+
+	// detectIncompleteChar determines if there is an incomplete UTF-8 character at
+	// the end of the given buffer. If so, it sets this.charLength to the byte
+	// length that character, and sets this.charReceived to the number of bytes
+	// that are available for this character.
+	StringDecoder.prototype.detectIncompleteChar = function(buffer) {
+	  // determine how many bytes we have to check at the end of this buffer
+	  var i = (buffer.length >= 3) ? 3 : buffer.length;
+
+	  // Figure out if one of the last i bytes of our buffer announces an
+	  // incomplete char.
+	  for (; i > 0; i--) {
+	    var c = buffer[buffer.length - i];
+
+	    // See http://en.wikipedia.org/wiki/UTF-8#Description
+
+	    // 110XXXXX
+	    if (i == 1 && c >> 5 == 0x06) {
+	      this.charLength = 2;
+	      break;
+	    }
+
+	    // 1110XXXX
+	    if (i <= 2 && c >> 4 == 0x0E) {
+	      this.charLength = 3;
+	      break;
+	    }
+
+	    // 11110XXX
+	    if (i <= 3 && c >> 3 == 0x1E) {
+	      this.charLength = 4;
+	      break;
+	    }
+	  }
+	  this.charReceived = i;
+	};
+
+	StringDecoder.prototype.end = function(buffer) {
+	  var res = '';
+	  if (buffer && buffer.length)
+	    res = this.write(buffer);
+
+	  if (this.charReceived) {
+	    var cr = this.charReceived;
+	    var buf = this.charBuffer;
+	    var enc = this.encoding;
+	    res += buf.slice(0, cr).toString(enc);
+	  }
+
+	  return res;
+	};
+
+	function passThroughWrite(buffer) {
+	  return buffer.toString(this.encoding);
+	}
+
+	function utf16DetectIncompleteChar(buffer) {
+	  this.charReceived = buffer.length % 2;
+	  this.charLength = this.charReceived ? 2 : 0;
+	}
+
+	function base64DetectIncompleteChar(buffer) {
+	  this.charReceived = buffer.length % 3;
+	  this.charLength = this.charReceived ? 3 : 0;
+	}
+
+
+/***/ },
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -6313,11 +6002,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Transform;
 
-	var Duplex = __webpack_require__(25);
+	var Duplex = __webpack_require__(19);
 
 	/*<replacement>*/
-	var util = __webpack_require__(27);
-	util.inherits = __webpack_require__(28);
+	var util = __webpack_require__(16);
+	util.inherits = __webpack_require__(17);
 	/*</replacement>*/
 
 	util.inherits(Transform, Duplex);
@@ -6459,7 +6148,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 35 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -6489,11 +6178,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = PassThrough;
 
-	var Transform = __webpack_require__(34);
+	var Transform = __webpack_require__(22);
 
 	/*<replacement>*/
-	var util = __webpack_require__(27);
-	util.inherits = __webpack_require__(28);
+	var util = __webpack_require__(16);
+	util.inherits = __webpack_require__(17);
 	/*</replacement>*/
 
 	util.inherits(PassThrough, Transform);
@@ -6511,35 +6200,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 36 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(33)
+	module.exports = __webpack_require__(20)
 
 
 /***/ },
-/* 37 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(25)
+	module.exports = __webpack_require__(19)
 
 
 /***/ },
-/* 38 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(34)
+	module.exports = __webpack_require__(22)
 
 
 /***/ },
-/* 39 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(35)
+	module.exports = __webpack_require__(23)
 
 
 /***/ },
-/* 40 */
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6581,20 +6270,330 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var document = __webpack_require__(30)
+
+	var applyProperties = __webpack_require__(32)
+
+	var isVNode = __webpack_require__(35)
+	var isVText = __webpack_require__(37)
+	var isWidget = __webpack_require__(38)
+	var handleThunk = __webpack_require__(39)
+
+	module.exports = createElement
+
+	function createElement(vnode, opts) {
+	    var doc = opts ? opts.document || document : document
+	    var warn = opts ? opts.warn : null
+
+	    vnode = handleThunk(vnode).a
+
+	    if (isWidget(vnode)) {
+	        return vnode.init()
+	    } else if (isVText(vnode)) {
+	        return doc.createTextNode(vnode.text)
+	    } else if (!isVNode(vnode)) {
+	        if (warn) {
+	            warn("Item is not a valid virtual dom node", vnode)
+	        }
+	        return null
+	    }
+
+	    var node = (vnode.namespace === null) ?
+	        doc.createElement(vnode.tagName) :
+	        doc.createElementNS(vnode.namespace, vnode.tagName)
+
+	    var props = vnode.properties
+	    applyProperties(node, props)
+
+	    var children = vnode.children
+
+	    for (var i = 0; i < children.length; i++) {
+	        var childNode = createElement(children[i], opts)
+	        if (childNode) {
+	            node.appendChild(childNode)
+	        }
+	    }
+
+	    return node
+	}
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
+	    typeof window !== 'undefined' ? window : {}
+	var minDoc = __webpack_require__(31);
+
+	if (typeof document !== 'undefined') {
+	    module.exports = document;
+	} else {
+	    var doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'];
+
+	    if (!doccy) {
+	        doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'] = minDoc;
+	    }
+
+	    module.exports = doccy;
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	/* (ignored) */
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(33)
+	var isHook = __webpack_require__(34)
+
+	module.exports = applyProperties
+
+	function applyProperties(node, props, previous) {
+	    for (var propName in props) {
+	        var propValue = props[propName]
+
+	        if (propValue === undefined) {
+	            removeProperty(node, propName, propValue, previous);
+	        } else if (isHook(propValue)) {
+	            removeProperty(node, propName, propValue, previous)
+	            if (propValue.hook) {
+	                propValue.hook(node,
+	                    propName,
+	                    previous ? previous[propName] : undefined)
+	            }
+	        } else {
+	            if (isObject(propValue)) {
+	                patchObject(node, props, previous, propName, propValue);
+	            } else {
+	                node[propName] = propValue
+	            }
+	        }
+	    }
+	}
+
+	function removeProperty(node, propName, propValue, previous) {
+	    if (previous) {
+	        var previousValue = previous[propName]
+
+	        if (!isHook(previousValue)) {
+	            if (propName === "attributes") {
+	                for (var attrName in previousValue) {
+	                    node.removeAttribute(attrName)
+	                }
+	            } else if (propName === "style") {
+	                for (var i in previousValue) {
+	                    node.style[i] = ""
+	                }
+	            } else if (typeof previousValue === "string") {
+	                node[propName] = ""
+	            } else {
+	                node[propName] = null
+	            }
+	        } else if (previousValue.unhook) {
+	            previousValue.unhook(node, propName, propValue)
+	        }
+	    }
+	}
+
+	function patchObject(node, props, previous, propName, propValue) {
+	    var previousValue = previous ? previous[propName] : undefined
+
+	    // Set attributes
+	    if (propName === "attributes") {
+	        for (var attrName in propValue) {
+	            var attrValue = propValue[attrName]
+
+	            if (attrValue === undefined) {
+	                node.removeAttribute(attrName)
+	            } else {
+	                node.setAttribute(attrName, attrValue)
+	            }
+	        }
+
+	        return
+	    }
+
+	    if(previousValue && isObject(previousValue) &&
+	        getPrototype(previousValue) !== getPrototype(propValue)) {
+	        node[propName] = propValue
+	        return
+	    }
+
+	    if (!isObject(node[propName])) {
+	        node[propName] = {}
+	    }
+
+	    var replacer = propName === "style" ? "" : undefined
+
+	    for (var k in propValue) {
+	        var value = propValue[k]
+	        node[propName][k] = (value === undefined) ? replacer : value
+	    }
+	}
+
+	function getPrototype(value) {
+	    if (Object.getPrototypeOf) {
+	        return Object.getPrototypeOf(value)
+	    } else if (value.__proto__) {
+	        return value.__proto__
+	    } else if (value.constructor) {
+	        return value.constructor.prototype
+	    }
+	}
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function isObject(x) {
+		return typeof x === "object" && x !== null;
+	};
+
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	module.exports = isHook
+
+	function isHook(hook) {
+	    return hook &&
+	      (typeof hook.hook === "function" && !hook.hasOwnProperty("hook") ||
+	       typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
+	}
+
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var version = __webpack_require__(36)
+
+	module.exports = isVirtualNode
+
+	function isVirtualNode(x) {
+	    return x && x.type === "VirtualNode" && x.version === version
+	}
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	module.exports = "2"
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var version = __webpack_require__(36)
+
+	module.exports = isVirtualText
+
+	function isVirtualText(x) {
+	    return x && x.type === "VirtualText" && x.version === version
+	}
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	module.exports = isWidget
+
+	function isWidget(w) {
+	    return w && w.type === "Widget"
+	}
+
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isVNode = __webpack_require__(35)
+	var isVText = __webpack_require__(37)
+	var isWidget = __webpack_require__(38)
+	var isThunk = __webpack_require__(40)
+
+	module.exports = handleThunk
+
+	function handleThunk(a, b) {
+	    var renderedA = a
+	    var renderedB = b
+
+	    if (isThunk(b)) {
+	        renderedB = renderThunk(b, a)
+	    }
+
+	    if (isThunk(a)) {
+	        renderedA = renderThunk(a, null)
+	    }
+
+	    return {
+	        a: renderedA,
+	        b: renderedB
+	    }
+	}
+
+	function renderThunk(thunk, previous) {
+	    var renderedThunk = thunk.vnode
+
+	    if (!renderedThunk) {
+	        renderedThunk = thunk.vnode = thunk.render(previous)
+	    }
+
+	    if (!(isVNode(renderedThunk) ||
+	            isVText(renderedThunk) ||
+	            isWidget(renderedThunk))) {
+	        throw new Error("thunk did not return a valid node");
+	    }
+
+	    return renderedThunk
+	}
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports) {
+
+	module.exports = isThunk
+
+	function isThunk(t) {
+	    return t && t.type === "Thunk"
+	}
+
+
+/***/ },
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(4)
+	var document = __webpack_require__(30)
 	var isArray = __webpack_require__(42)
 
-	var render = __webpack_require__(1)
+	var render = __webpack_require__(29)
 	var domIndex = __webpack_require__(43)
 	var patchOp = __webpack_require__(44)
 	module.exports = patch
 
 	function patch(rootNode, patches, renderOptions) {
 	    renderOptions = renderOptions || {}
-	    renderOptions.patch = renderOptions.patch || patchRecursive
+	    renderOptions.patch = renderOptions.patch && renderOptions.patch !== patch
+	        ? renderOptions.patch
+	        : patchRecursive
 	    renderOptions.render = renderOptions.render || render
 
 	    return renderOptions.patch(rootNode, patches, renderOptions)
@@ -6773,9 +6772,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var applyProperties = __webpack_require__(6)
+	var applyProperties = __webpack_require__(32)
 
-	var isWidget = __webpack_require__(10)
+	var isWidget = __webpack_require__(38)
 	var VPatch = __webpack_require__(45)
 
 	var updateWidget = __webpack_require__(46)
@@ -6930,7 +6929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(3)
+	var version = __webpack_require__(36)
 
 	VirtualPatch.NONE = 0
 	VirtualPatch.VTEXT = 1
@@ -6958,7 +6957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isWidget = __webpack_require__(10)
+	var isWidget = __webpack_require__(38)
 
 	module.exports = updateWidget
 
@@ -6982,11 +6981,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var isArray = __webpack_require__(42)
 
 	var VPatch = __webpack_require__(45)
-	var isVNode = __webpack_require__(9)
-	var isVText = __webpack_require__(2)
-	var isWidget = __webpack_require__(10)
-	var isThunk = __webpack_require__(12)
-	var handleThunk = __webpack_require__(11)
+	var isVNode = __webpack_require__(35)
+	var isVText = __webpack_require__(37)
+	var isWidget = __webpack_require__(38)
+	var isThunk = __webpack_require__(40)
+	var handleThunk = __webpack_require__(39)
 
 	var diffProps = __webpack_require__(48)
 
@@ -7412,8 +7411,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(7)
-	var isHook = __webpack_require__(8)
+	var isObject = __webpack_require__(33)
+	var isHook = __webpack_require__(34)
 
 	module.exports = diffProps
 
@@ -7482,11 +7481,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var VNode = __webpack_require__(50);
 	var VText = __webpack_require__(51);
-	var isVNode = __webpack_require__(9);
-	var isVText = __webpack_require__(2);
-	var isWidget = __webpack_require__(10);
-	var isHook = __webpack_require__(8);
-	var isVThunk = __webpack_require__(12);
+	var isVNode = __webpack_require__(35);
+	var isVText = __webpack_require__(37);
+	var isWidget = __webpack_require__(38);
+	var isHook = __webpack_require__(34);
+	var isVThunk = __webpack_require__(40);
 
 	var parseTag = __webpack_require__(52);
 	var softSetHook = __webpack_require__(54);
@@ -7619,11 +7618,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(3)
-	var isVNode = __webpack_require__(9)
-	var isWidget = __webpack_require__(10)
-	var isThunk = __webpack_require__(12)
-	var isVHook = __webpack_require__(8)
+	var version = __webpack_require__(36)
+	var isVNode = __webpack_require__(35)
+	var isWidget = __webpack_require__(38)
+	var isThunk = __webpack_require__(40)
+	var isVHook = __webpack_require__(34)
 
 	module.exports = VirtualNode
 
@@ -7697,7 +7696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(3)
+	var version = __webpack_require__(36)
 
 	module.exports = VirtualText
 

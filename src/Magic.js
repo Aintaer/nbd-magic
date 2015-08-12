@@ -11,7 +11,7 @@ import diff from 'virtual-dom/vtree/diff';
 import h from 'virtual-dom/virtual-hyperscript/index';
 import svg from 'virtual-dom/virtual-hyperscript/svg';
 
-const _parser = sax.parser(true, {
+const _parser = sax.parser(false, {
   html5: true,
   trim: false,
   normalize: true,
