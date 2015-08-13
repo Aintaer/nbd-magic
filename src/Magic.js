@@ -178,7 +178,7 @@ export default View.extend({
   },
 
   appendTo(tree, $context) {
-    tree._el = createElement(tree);
+    tree._el = tree._el || createElement(tree);
     return View.appendTo(tree._el, $context);
   },
 

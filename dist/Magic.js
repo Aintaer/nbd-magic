@@ -289,7 +289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  appendTo: function appendTo(tree, $context) {
-	    tree._el = (0, _virtualDomVdomCreateElement2['default'])(tree);
+	    tree._el = tree._el || (0, _virtualDomVdomCreateElement2['default'])(tree);
 	    return _nbdView2['default'].appendTo(tree._el, $context);
 	  },
 
