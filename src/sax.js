@@ -75,6 +75,7 @@ function SAXParser (strict, opt) {
   parser.tag = parser.error = null
   parser.strict = !!strict
   parser.noscript = !!(strict || parser.opt.noscript)
+  parser.preserveCase = !!(strict || parser.opt.preserveCase)
   parser.state = S.BEGIN
   parser.strictEntities = parser.opt.strictEntities
   parser.ENTITIES = parser.strictEntities ? Object.create(sax.XML_ENTITIES) : Object.create(sax.ENTITIES)
@@ -693,7 +694,7 @@ function strictFail (parser, message) {
 }
 
 function newTag (parser) {
-  if (!parser.strict) parser.tagName = parser.tagName[parser.looseCase]()
+  if (!parser.preserveCase) parser.tagName = parser.tagName[parser.looseCase]()
   var parent = parser.tags[parser.tags.length - 1] || parser
     , tag = parser.tag = { name : parser.tagName, attributes : {} }
 
@@ -718,7 +719,7 @@ function qname (name, attribute) {
 }
 
 function attrib (parser) {
-  if (!parser.strict) parser.attribName = parser.attribName[parser.looseCase]()
+  if (!parser.preserveCase) parser.attribName = parser.attribName[parser.looseCase]()
 
   if (parser.attribList.indexOf(parser.attribName) !== -1 ||
       parser.tag.attributes.hasOwnProperty(parser.attribName)) {
@@ -871,7 +872,7 @@ function closeTag (parser) {
   // <a><b></c></b></a> will close everything, otherwise.
   var t = parser.tags.length
   var tagName = parser.tagName
-  if (!parser.strict) tagName = tagName[parser.looseCase]()
+  if (!parser.preserveCase) tagName = tagName[parser.looseCase]()
   var closeTo = tagName
   while (t --) {
     var close = parser.tags[t]

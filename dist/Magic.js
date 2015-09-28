@@ -110,7 +110,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  html5: true,
 	  trim: false,
 	  normalize: true,
-	  lowercase: true
+	  lowercase: true,
+	  preserveCase: true
 	});
 	var tagstack = [];
 
@@ -399,6 +400,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  parser.tag = parser.error = null;
 	  parser.strict = !!strict;
 	  parser.noscript = !!(strict || parser.opt.noscript);
+	  parser.preserveCase = !!(strict || parser.opt.preserveCase);
 	  parser.state = S.BEGIN;
 	  parser.strictEntities = parser.opt.strictEntities;
 	  parser.ENTITIES = parser.strictEntities ? Object.create(sax.XML_ENTITIES) : Object.create(sax.ENTITIES);
@@ -1022,7 +1024,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function newTag(parser) {
-	  if (!parser.strict) parser.tagName = parser.tagName[parser.looseCase]();
+	  if (!parser.preserveCase) parser.tagName = parser.tagName[parser.looseCase]();
 	  var parent = parser.tags[parser.tags.length - 1] || parser,
 	      tag = parser.tag = { name: parser.tagName, attributes: {} };
 
@@ -1047,7 +1049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function attrib(parser) {
-	  if (!parser.strict) parser.attribName = parser.attribName[parser.looseCase]();
+	  if (!parser.preserveCase) parser.attribName = parser.attribName[parser.looseCase]();
 
 	  if (parser.attribList.indexOf(parser.attribName) !== -1 || parser.tag.attributes.hasOwnProperty(parser.attribName)) {
 	    return parser.attribName = parser.attribValue = "";
@@ -1189,7 +1191,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // <a><b></c></b></a> will close everything, otherwise.
 	  var t = parser.tags.length;
 	  var tagName = parser.tagName;
-	  if (!parser.strict) tagName = tagName[parser.looseCase]();
+	  if (!parser.preserveCase) tagName = tagName[parser.looseCase]();
 	  var closeTo = tagName;
 	  while (t--) {
 	    var close = parser.tags[t];

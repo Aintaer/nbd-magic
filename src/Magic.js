@@ -15,7 +15,8 @@ const _parser = sax.parser(false, {
   html5: true,
   trim: false,
   normalize: true,
-  lowercase: true
+  lowercase: true,
+  preserveCase: true
 });
 const tagstack = [];
 
